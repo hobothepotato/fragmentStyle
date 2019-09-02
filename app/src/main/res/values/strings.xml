@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name">fragmentStyle</string>
+
+    <!-- Bluetooth -->
+    <string name="bluetooth_scan">Scan for Nearby Devices</string>
+    <string name="bluetooth_discovering">Discovering Nearby Devices</string>
+    <string name="bluetooth_paired_device_list_title">Paired Devices</string>
+    <string name="bluetooth_discovered_device_list_title">Discovered Devices</string>
+    <string name="bluetooth_disconnect">Disconnect</string>
+    <string name="bluetooth_send_message">Send</string>
+    <string name="bluetooth_messages_title">Messages</string>
+    <string name="bluetooth_unconnected_error">Please connect to a remote Bluetooth device first</string>
+
+    <!-- Robot -->
+    <string name="robot_forward">Forward</string>
+    <string name="robot_backward">Backward</string>
+    <string name="robot_rotate_left">Rotate Left</string>
+    <string name="robot_rotate_right">Rotate Right</string>
+
+    <string name="place_robot">Placing Robot</string>
+    <string name="place_waypoint">Placing Waypoint</string>
+    <string name="place_obstacle">Placing Obstacle</string>
+
+    <!-- Robot Statuses -->
+    <string name="robot_status_unknown">None</string>
+    <string name="robot_status_exploring">Exploring</string>
+    <string name="robot_status_fastest_path">Fastest Path</string>
+    <string name="robot_status_turning_left">Turning Left</string>
+    <string name="robot_status_turning_right">Turning Right</string>
+    <string name="robot_status_moving_forward">Moving Forward</string>
+    <string name="robot_status_reversing">Reversing</string>
+
+    <!-- Toolbar -->
+    <string name="action_settings">Settings</string>
+    <string name="action_bluetooth_settings">Bluetooth</string>
+
+    <!-- Arena -->
+    <string name="arena_title">Arena</string>
+    <string name="arena_descriptors_title">Arena Descriptors</string>
+    <string name="arena_descriptors_none">No information available</string>
+    <string name="arena_clear">Map Clear</string>
+    <string name="arena_load">Map Load</string>
+    <string name="arena_descriptors">Descriptors</string>
+    <string name="arena_explore">Explore</string>
+    <string name="arena_fastest">Fastest Path</string>
+
+    <string name="arena_waypoint_coords">Waypoint Coordinates</string>
+    <string name="arena_waypoint_x">Waypoint X</string>
+    <string name="arena_waypoint_y">Waypoint Y</string>
+
+    <!-- Arena SharedPreferences -->
+    <string name="arena_p1_descriptor">Arena P1 Descriptor</string>
+    <string name="arena_p2_descriptor">Arena P2 Descriptor</string>
+    <string name="arena_robot_position">Arena Robot Position</string>
+    <string name="arena_waypoint">Arena Waypoint</string>
+
+    <!-- Custom Commands -->
+    <string name="custom_commands_title">Custom Commands</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+
+    <!-- Custom Commands -->
+    <string name="custom_command_title">Custom Commands</string>
+    <string name="custom_command_1_button_title">Send F1: %1$s</string>
+    <string name="custom_command_2_button_title">Send F2: %1$s</string>
+    <string name="custom_command_1_reconfigure">Reconfigure F1</string>
+    <string name="custom_command_2_reconfigure">Reconfigure F2</string>
+
+    <!-- Custom Command Dialog -->
+    <string name="custom_command_reconfigure">Reconfigure Custom Command</string>
+    <string name="custom_command_value_current">Current Custom Command</string>
+    <string name="custom_command_value_new">New Custom Command</string>
+
+    <!-- Custom Command SharedPreferences -->
+    <string name="custom_command_1_key">F1</string>
+    <string name="custom_command_1_default_value">F1</string>
+    <string name="custom_command_2_key">F2</string>
+    <string name="custom_command_2_default_value">F2</string>
+
+    <!-- Settings -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="settings_custom_command_1_title">Reconfigure F1</string>
+    <string name="settings_custom_command_2_title">Reconfigure F2</string>
+
+    <!-- SharedPreferences -->
+    <string name="preference_file_key">PREFERENCE_FILE_KEY</string>
+</resources>

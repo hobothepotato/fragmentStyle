@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.fragmentstyle.CustomCommandsFragment"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/margin">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin"
+        android:textStyle="bold"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="@dimen/title"
+        android:text="@string/custom_command_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/custom_command_1_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/custom_command_1_button_title"/>
+
+        <Button
+            android:id="@+id/custom_command_2_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/custom_command_2_button_title"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/custom_command_1_reconfigure_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/custom_command_1_reconfigure"/>
+
+        <Button
+            android:id="@+id/custom_command_2_reconfigure_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/custom_command_2_reconfigure"/>
+
+    </LinearLayout>
+
+</LinearLayout>

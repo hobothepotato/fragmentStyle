@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Toolbar Dimensions-->
+    <dimen name="toolbar_height">64dp</dimen>
+
+    <!-- Standard Dimensions -->
+    <dimen name="margin">12dp</dimen>
+    <dimen name="margin_dialog_title">24dp</dimen>
+    <dimen name="margin_dialog_contents">24dp</dimen>
+
+    <!-- Title Dimensions -->
+    <dimen name="title">18sp</dimen>
+
+    <!-- Arena Dimensions -->
+    <dimen name="arena_controls_margin">6dp</dimen>
+</resources>

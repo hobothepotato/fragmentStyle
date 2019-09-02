@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_dialog_title"
+        android:layout_marginLeft="@dimen/margin_dialog_title"
+        android:layout_marginStart="@dimen/margin_dialog_title"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/primary_text_light"
+        android:text="@string/arena_descriptors_title"/>
+
+    <TextView
+        android:id="@+id/arena_p1_descriptor_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_dialog_contents"
+        android:layout_marginRight="@dimen/margin_dialog_contents"
+        android:textColor="@android:color/black"
+        android:text="@string/arena_p1_descriptor" />
+
+    <TextView
+        android:id="@+id/arena_p1_descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_dialog_contents"
+        android:layout_marginRight="@dimen/margin_dialog_contents" />
+
+    <TextView
+        android:id="@+id/arena_p2_descriptor_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_dialog_contents"
+        android:layout_marginRight="@dimen/margin_dialog_contents"
+        android:textColor="@android:color/black"
+        android:text="@string/arena_p2_descriptor" />
+
+    <TextView
+        android:id="@+id/arena_p2_descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_dialog_contents"
+        android:layout_marginRight="@dimen/margin_dialog_contents" />
+
+</LinearLayout>

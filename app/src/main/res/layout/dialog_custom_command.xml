@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_dialog_title"
+        android:layout_marginLeft="@dimen/margin_dialog_title"
+        android:layout_marginStart="@dimen/margin_dialog_title"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/primary_text_light"
+        android:text="@string/custom_command_reconfigure"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_dialog_contents"
+        android:layout_marginRight="@dimen/margin_dialog_contents"
+        android:hint="@string/custom_command_value_current">
+
+        <EditText
+            android:id="@+id/custom_command_value_current"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/custom_command_value_current"
+            android:inputType="none"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_dialog_contents"
+        android:layout_marginRight="@dimen/margin_dialog_contents"
+        android:hint="@string/custom_command_value_new">
+
+        <EditText
+            android:id="@+id/custom_command_value_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/custom_command_value_new"
+            android:inputType="text"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

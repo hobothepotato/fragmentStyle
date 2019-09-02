@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+
+    <!-- Bluetooth -->
+    <item android:id="@+id/action_bluetooth_settings"
+        android:title="@string/action_bluetooth_settings"
+        app:showAsAction="ifRoom"/>
+
+    <!-- Arena -->
+    <item android:id="@+id/action_arena"
+        android:title="@string/arena_title"
+        app:showAsAction="ifRoom"/>
+
+    <!-- Custom Commands -->
+    <item android:id="@+id/action_custom_commands"
+        android:title="@string/custom_commands_title"
+        app:showAsAction="withText"/>
+
+</menu>

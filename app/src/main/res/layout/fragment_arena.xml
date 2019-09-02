@@ -1,0 +1,174 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.fragmentstyle.ArenaFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/arena">
+
+        <RelativeLayout
+            android:id="@+id/arena_frame"
+            android:layout_width="480dp"
+            android:layout_height="640dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:gravity="center_horizontal">
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/arena_load"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/arena_frame"
+            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_toEndOf="@+id/arena_frame"
+            android:layout_toRightOf="@+id/arena_frame"
+            android:text="@string/arena_load"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/arena_clear"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/arena_load"
+            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_toEndOf="@+id/arena_frame"
+            android:layout_toRightOf="@+id/arena_frame"
+            android:text="@string/arena_clear"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:layout_below="@id/arena"
+        android:id="@+id/arena_controls">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/arena_controls_left">
+
+            <TextView
+                android:id="@+id/arena_robot_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/bluetooth_status"
+                android:layout_alignLeft="@+id/bluetooth_status"
+                android:layout_alignStart="@+id/bluetooth_status"
+                android:layout_marginBottom="32dp"
+                android:text="@string/robot_status_unknown"
+                android:textSize="18sp" />
+
+            <Switch
+                android:id="@+id/bluetooth_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="18dp"
+                android:switchPadding="12dp"
+                android:text="@string/action_bluetooth_settings"
+                android:clickable="false"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/arena_controls_middle">
+
+            <ImageButton
+                android:id="@+id/robot_controls_forward"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/robot_forward"
+                android:src="@drawable/ic_arrow_upward_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/robot_controls_rotate_right"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignTop="@+id/robot_controls_forward"
+                android:layout_toEndOf="@+id/robot_controls_forward"
+                android:layout_toRightOf="@+id/robot_controls_forward"
+                android:contentDescription="@string/robot_rotate_right"
+                android:src="@drawable/ic_rotate_right_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/robot_controls_rotate_left"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignTop="@+id/robot_controls_forward"
+                android:layout_toLeftOf="@+id/robot_controls_forward"
+                android:layout_toStartOf="@+id/robot_controls_forward"
+                android:contentDescription="@string/robot_rotate_left"
+                android:src="@drawable/ic_rotate_left_black_24dp" />
+
+            <Button
+                android:id="@+id/arena_map_descriptor"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:text="@string/arena_descriptors"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/arena_controls_right">
+
+            <Button
+                android:id="@+id/arena_place_waypoint_button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/arena_explore"
+                android:layout_alignLeft="@+id/arena_explore"
+                android:layout_alignStart="@+id/arena_explore"
+                android:text="@string/place_waypoint"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/arena_explore"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/arena_explore"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/arena_fastest"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/arena_explore"
+                android:layout_alignStart="@id/arena_explore"
+                android:layout_alignRight="@id/arena_explore"
+                android:layout_alignEnd="@id/arena_explore"
+                android:layout_below="@+id/arena_explore"
+                android:text="@string/arena_fastest"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
