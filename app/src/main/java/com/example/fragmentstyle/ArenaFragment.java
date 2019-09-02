@@ -23,6 +23,12 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.example.fragmentstyle.Constants;
+import com.example.fragmentstyle.MainActivity;
+import com.example.fragmentstyle.R;
+import com.example.fragmentstyle.BluetoothService;
+import com.example.fragmentstyle.Preferences;
+
 import static com.example.fragmentstyle.Constants.ARENA_COLUMN_COUNT;
 import static com.example.fragmentstyle.Constants.ARENA_NONE;
 import static com.example.fragmentstyle.Constants.ARENA_ROW_COUNT;
