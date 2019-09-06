@@ -29,6 +29,7 @@ import static android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED;
 public class MainActivity extends AppCompatActivity implements ReconfigureDialogFragment.ReconfigureDialogListener, WaypointCoordsDialogFragment.WaypointCoordsDialogListener{
     //Logging Tag
     private static final String TAG = "Main";
+    private static final String MY_TAG = "Shawn_Log: MainActivity:";
 
     //Fragment variables
     private static FragmentManager fm;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements ReconfigureDialog
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(MY_TAG, "Started MainActivity.");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements ReconfigureDialog
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(MY_TAG, "onOptionsItemSelected item: "+item.getItemId());
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_bluetooth_settings:
@@ -108,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements ReconfigureDialog
 
     public static void addFragment(String tag) {
         try {
+            Log.d(MY_TAG, "addFragment tag: "+tag);
             //  Begin fragment transaction
             FragmentTransaction ft = fm.beginTransaction();
             //  Find tagged fragment

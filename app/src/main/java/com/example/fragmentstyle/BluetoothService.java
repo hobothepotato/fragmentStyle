@@ -30,7 +30,8 @@ public class BluetoothService {
     //  Bluetooth Settings
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
     private static final String NAME = MY_UUID.toString();
-    private static final String TAG = "BT_SVC";
+    private static final String TAG = "BT_SVC:";
+    private String MY_TAG = " Shawn_Log: BluetootheService: ";
 
     //  Member variables
     private static ConnectThread mConnectThread;
@@ -48,6 +49,7 @@ public class BluetoothService {
     }
 
     private BluetoothService() {
+        Log.d(MY_TAG, "Initializing mHandler in BluetoothService");
         mHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -286,10 +288,10 @@ public class BluetoothService {
                     //  Read from the InputStream
                     numBytes = mmInStream.read(mmBuffer);
                     message = new String(mmBuffer).substring(0, numBytes);
-                    Log.d(TAG, "(" + numBytes + "): " + message);
                     // Send the obtained bytes to the UI activity.
+                    Log.d(MY_TAG, "mHandler message (run): "+message);
                     mHandler.obtainMessage(MESSAGE_READ, numBytes, -1, message).sendToTarget();
-                } catch (IOException e) {
+                 } catch (IOException e) {
                     Log.e(TAG, "Input stream was disconnected", e);
                     sendServiceMessage(BT_CONNECTION_LOST);
                     break;
@@ -304,7 +306,9 @@ public class BluetoothService {
                 mmOutStream.write(command.getBytes());
                 mmOutStream.flush();
                 // Share the sent message with the UI activity.
+                Log.d(MY_TAG, "mHandler command sent to remote device: "+command);
                 mHandler.obtainMessage(MESSAGE_WRITE, command.getBytes().length, -1, command).sendToTarget();
+                //mHandler.obtainMessage(MESSAGE_READ, command.getBytes().length, -1, command).sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Error occurred when sending data", e);
                 sendServiceMessage(BT_ERROR_OCCURRED);

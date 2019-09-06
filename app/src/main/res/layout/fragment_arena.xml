@@ -21,7 +21,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/arena_load"
+            android:id="@+id/manualBtn"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/arena_frame"
@@ -29,19 +29,19 @@
             android:layout_marginStart="3dp"
             android:layout_toEndOf="@+id/arena_frame"
             android:layout_toRightOf="@+id/arena_frame"
-            android:text="@string/arena_load"
+            android:text="Manual"
             android:textSize="10sp" />
 
         <Button
-            android:id="@+id/arena_clear"
+            android:id="@+id/updateBtn"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/arena_load"
+            android:layout_below="@+id/manualBtn"
             android:layout_marginLeft="3dp"
             android:layout_marginStart="3dp"
             android:layout_toEndOf="@+id/arena_frame"
             android:layout_toRightOf="@+id/arena_frame"
-            android:text="@string/arena_clear"
+            android:text="Update"
             android:textSize="10sp" />
 
     </RelativeLayout>

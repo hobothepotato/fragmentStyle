@@ -42,13 +42,15 @@ import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_RIGHT;
 
 public class ArenaFragment extends Fragment {
 
-    private final String TAG = "ARENA_FRAG";
+    private final String TAG = "ARENA_FRAG:";
+    private String MY_TAG = " Shawn_Log: ArenaFragment: ";
 
     //  Bluetooth Service
     private static final BluetoothService bs = BluetoothService.getInstance();
 
     //  Arena view
     private ArenaView arenaView;
+    private Button manualBtn, updateBtn;
 
     //  Arena Frame
     private RelativeLayout arenaFrame;
@@ -117,10 +119,10 @@ public class ArenaFragment extends Fragment {
         mapDescriptorButton.setOnClickListener(mapDescriptorButtonClickListener);
 
         //  Arena clear/load
-        Button clearArenaButton = view.findViewById(R.id.arena_clear);
-        Button loadArenaButton = view.findViewById(R.id.arena_load);
-        clearArenaButton.setOnClickListener(clearArenaButtonClickListener);
-        loadArenaButton.setOnClickListener(loadArenaButtonClickListener);
+        manualBtn = view.findViewById(R.id.manualBtn);
+        updateBtn = view.findViewById(R.id.updateBtn);
+        manualBtn.setOnClickListener(manualButtonClickListener);
+        updateBtn.setOnClickListener(updateButtonClickListener);
 
         //  Bluetooth Status
         bluetoothStatusSwitch = view.findViewById(R.id.bluetooth_status);
@@ -258,7 +260,7 @@ public class ArenaFragment extends Fragment {
         Pattern pattern;
         Matcher matcher;
         String[] contents;
-
+        Log.d(MY_TAG, "process Message: state: "+state);
         if (state == State.EXPLORING) {
             /**
              * Messages arriving have to be deconstructed and processed accordingly.
@@ -267,7 +269,7 @@ public class ArenaFragment extends Fragment {
              *  Example:
              *      ffff...ffff,0000...800,1,14,NORTH
              */
-
+            Log.d(MY_TAG, "Process Message (EXPLORE) message: "+message);
             //  Regex expression to match correct messages
             pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,(?:(?:north|south)(?:[ ](?:east|west))?|east|west)", Pattern.CASE_INSENSITIVE);
             //  Matcher that performs matching of regex to message
@@ -281,9 +283,9 @@ public class ArenaFragment extends Fragment {
             *   is lost. A single buffer is likely to only concatenate
             *   two to three steps, and is an acceptable loss.
             * */
-            while (matcher.find()) {
+            while(matcher.find()) {
+                Log.d(MY_TAG, "IN WHILE LOOP");
                 message = matcher.group();
-
                 //  Get contents of message
                 contents = message.split(",");
                 String paddedP1 = contents[0].trim();
@@ -291,6 +293,7 @@ public class ArenaFragment extends Fragment {
                 robotMidX = contents[2].trim();
                 robotMidY = contents[3].trim();
                 robotDir = contents[4].trim().toLowerCase();
+                Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir);
 
                 //  Update map with P1 descriptor and save into SharedPreferences for future use
                 arenaView.updateMapP1(paddedP1);
@@ -304,6 +307,7 @@ public class ArenaFragment extends Fragment {
                 moveRobot(robotMidX, robotMidY, robotDir);
             }
         } else if (state == State.FASTEST) {
+            Log.d(MY_TAG, "Process Message (FASTEST) message: "+message);
             /**
              * Messages arriving have to be deconstructed and processed accordingly
              *  Messages come in the following format:
@@ -418,6 +422,7 @@ public class ArenaFragment extends Fragment {
                             arenaView.moveRobot(1, 1, 180);
                             Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             //  Send way point coordinates
+                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
                             bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_WAYPOINT + "" + waypointMsg);
                             //  Save way point coordinates
                             Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
@@ -501,18 +506,25 @@ public class ArenaFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener clearArenaButtonClickListener = new View.OnClickListener() {
+    private View.OnClickListener manualButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             //  Clear arena
-            arenaView.clearArena();
+            if(arenaView.getManualArena() == 0){
+                arenaView.setManualArena(1);
+                manualBtn.setText("Automatic");
+            }else{
+                arenaView.setManualArena(0);
+                manualBtn.setText("Manual");
+            }
         }
     };
 
-    private View.OnClickListener loadArenaButtonClickListener = new View.OnClickListener() {
+    private View.OnClickListener updateButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            loadSavedArena();
+            if(arenaView.getManualArena() == 1) arenaView.setManualUpdate(1);
+            else  Toast.makeText(getContext(), "Must set to Manual before update is available.", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -523,14 +535,24 @@ public class ArenaFragment extends Fragment {
         @Override
         public boolean handleMessage(Message message) {
             try {
+                Log.d(MY_TAG, "ArenaFragment Handler");
+                Log.d(MY_TAG, "BluetoothServiceMessageHandler: message.what: "+message.what);
+                // 0 = Message_read
+                // 1 = message_write
+                // 100 = BT_Connected
                 switch (message.what) {
                     case Constants.MESSAGE_READ:
                         //  Reading message from remote device
                         String receivedMessage = message.obj.toString();
                         //  Handle message from Pi
-                        processMessage(receivedMessage);
+                        Log.d(MY_TAG, "BluetoothServiceMessageHandler: receivedMessage: "+receivedMessage);
+                        if(arenaView.getManualArena() == 0 || (arenaView.getManualUpdate() == 1)) {
+                            processMessage(receivedMessage);
+                            if(arenaView.getManualUpdate() == 1) arenaView.setManualUpdate(0);
+                        }
                         break;
                     case Constants.MESSAGE_WRITE:
+                        Log.d(MY_TAG, "BluetoothServiceMessageHandler: MESSAGE_WRITE: message string: "+message.obj.toString());
                         //  Writing message to remote device
                         break;
                     case Constants.BT_CONNECTED:

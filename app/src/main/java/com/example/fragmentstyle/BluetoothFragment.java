@@ -29,7 +29,8 @@ import java.util.Set;
 public class BluetoothFragment extends Fragment {
 
     //  Logging
-    private final String TAG = "BT_CONNECT_FRAG";
+    private final String TAG = "BT_CONNECT_FRAG:";
+    private String MY_TAG = " Shawn_Log: BluetoothFragment: ";
 
     //  Bluetooth
     private BluetoothAdapter mBluetoothAdapter;
@@ -237,6 +238,12 @@ public class BluetoothFragment extends Fragment {
         @Override
         public boolean handleMessage(Message message) {
             try {
+                Log.d(MY_TAG, "BluetoothFragment Handler");
+                Log.d(MY_TAG, "bluetoothServiceMessageHandler: message.what: "+message.what);
+                //Message_Read = 0
+                //MESSAGE_WRITE = 1
+                //BT_CONNECTED = 100
+                //BT_DISCONNECTING = 101
                 switch (message.what) {
                     case Constants.MESSAGE_READ:
                         //  Reading message from remote device
