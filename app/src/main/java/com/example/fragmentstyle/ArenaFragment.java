@@ -258,7 +258,9 @@ public class ArenaFragment extends Fragment {
         String robotMidY = "";
         String robotDir = "";
         Pattern pattern;
+        Pattern pattern2;
         Matcher matcher;
+        Matcher matcher2;
         String[] contents;
         Log.d(MY_TAG, "process Message: state: "+state);
         if (state == State.EXPLORING) {
@@ -283,6 +285,9 @@ public class ArenaFragment extends Fragment {
             *   is lost. A single buffer is likely to only concatenate
             *   two to three steps, and is an acceptable loss.
             * */
+            pattern2 = Pattern.compile("status:[ a-zA-Z]+");
+            matcher2 = pattern2.matcher(message);
+            if(matcher2.find()) robotStatusText.setText(message);
             while(matcher.find()) {
                 Log.d(MY_TAG, "IN WHILE LOOP");
                 message = matcher.group();
@@ -510,10 +515,15 @@ public class ArenaFragment extends Fragment {
         @Override
         public void onClick(View view) {
             //  Clear arena
+            Log.d(MY_TAG, "manualButtonClickListener arenaVIew.getManualArena(): "+arenaView.getManualArena());
             if(arenaView.getManualArena() == 0){
                 arenaView.setManualArena(1);
+                bs.sendMessageToRemoteDevice("ManualMode");
+                robotStatusText.setText("In Manual Receiving Mode");
                 manualBtn.setText("Automatic");
             }else{
+                bs.sendMessageToRemoteDevice("AutomaticMode");
+                robotStatusText.setText("In Automatic Receiving Mode");
                 arenaView.setManualArena(0);
                 manualBtn.setText("Manual");
             }
@@ -546,10 +556,7 @@ public class ArenaFragment extends Fragment {
                         String receivedMessage = message.obj.toString();
                         //  Handle message from Pi
                         Log.d(MY_TAG, "BluetoothServiceMessageHandler: receivedMessage: "+receivedMessage);
-                        if(arenaView.getManualArena() == 0 || (arenaView.getManualUpdate() == 1)) {
-                            processMessage(receivedMessage);
-                            if(arenaView.getManualUpdate() == 1) arenaView.setManualUpdate(0);
-                        }
+                        processMessage(receivedMessage);
                         break;
                     case Constants.MESSAGE_WRITE:
                         Log.d(MY_TAG, "BluetoothServiceMessageHandler: MESSAGE_WRITE: message string: "+message.obj.toString());
