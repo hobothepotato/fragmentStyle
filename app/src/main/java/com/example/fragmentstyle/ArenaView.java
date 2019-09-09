@@ -57,7 +57,6 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
     //  Current Action
     private int arenaAction = ARENA_NONE;
     private int manualState = 0;
-    private int manualUpdateState = 0;
 
     //  Arena objects
     private StringBuilder sb;
@@ -538,11 +537,5 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
     }
     public int getManualArena(){
         return manualState;
-    }
-    public void setManualUpdate(int state){
-        manualUpdateState = state;
-    }
-    public int getManualUpdate(){
-        return manualUpdateState;
     }
 }

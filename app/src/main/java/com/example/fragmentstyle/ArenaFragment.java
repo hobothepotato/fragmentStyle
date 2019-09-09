@@ -533,7 +533,7 @@ public class ArenaFragment extends Fragment {
     private View.OnClickListener updateButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(arenaView.getManualArena() == 1) arenaView.setManualUpdate(1);
+            if(arenaView.getManualArena() == 1) bs.sendMessageToRemoteDevice("Update");
             else  Toast.makeText(getContext(), "Must set to Manual before update is available.", Toast.LENGTH_SHORT).show();
         }
     };
