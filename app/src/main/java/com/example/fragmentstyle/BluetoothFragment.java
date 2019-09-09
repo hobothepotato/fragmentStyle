@@ -63,7 +63,7 @@ public class BluetoothFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(MY_TAG, "Started onCreate Method().");
         //  Get Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -207,19 +207,23 @@ public class BluetoothFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             if (action != null) {
+                Log.d(MY_TAG, "mBroadcastReceiver: action: "+action);
                 switch (action) {
                     case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
                         //  Bluetooth device discovery started
+                        Log.d(MY_TAG, "I am in case Discovery started.");
                         mScanButton.setText(R.string.bluetooth_discovering);
                         mScanButton.setEnabled(false);
                         break;
                     case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                         //  Bluetooth device discovery completed
+                        Log.d(MY_TAG, "I am in case Discovery finished.");
                         mScanButton.setText(R.string.bluetooth_scan);
                         mScanButton.setEnabled(true);
                         break;
                     case BluetoothDevice.ACTION_FOUND:
                         //  Bluetooth device discovered, get information from Intent
+                        Log.d(MY_TAG, "I am in case action found.");
                         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                         String deviceName = device.getName();
                         mDiscoveredDeviceListAdapter.add(deviceName);
