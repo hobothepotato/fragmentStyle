@@ -1,6 +1,7 @@
 package com.example.fragmentstyle;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fragmentstyle.Preferences;
@@ -19,6 +21,10 @@ public class CustomCommandsFragment extends Fragment {
 
     //  Logging
     private static final String TAG = "CUSTOM_COMMANDS_FRAG";
+
+    public enum STATUS{CALIBRATING, MOVEMENT, FASTEST_PATH, EXPLORATION, ERROR, DEFAULT};
+
+    STATUS myStatus = STATUS.DEFAULT;
 
     //  Dialog variables
     private final static String DIALOG_TAG = "RECONFIGURE";
@@ -49,9 +55,51 @@ public class CustomCommandsFragment extends Fragment {
         customCommand2Button = view.findViewById(R.id.custom_command_2_button);
         Button customCommand1ReconfigureButton = view.findViewById(R.id.custom_command_1_reconfigure_button);
         Button customCommand2ReconfigureButton = view.findViewById(R.id.custom_command_2_reconfigure_button);
+        Button changeButton = view.findViewById(R.id.changeStatus);
+        final TextView status = view.findViewById(R.id.status);
 
         //  Set button values
         setButtonValues();
+
+        changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (myStatus){
+                    case DEFAULT:
+                        status.setText("default status");
+                        status.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        myStatus = STATUS.CALIBRATING;
+                        break;
+                    case CALIBRATING:
+                        status.setText("calibrating status");
+                        status.setBackgroundColor(Color.parseColor("#F3FF00"));
+                        myStatus = STATUS.MOVEMENT;
+                        break;
+                    case MOVEMENT:
+                        status.setText("movement status");
+                        status.setBackgroundColor(Color.parseColor("#CE33FF"));
+                        myStatus = STATUS.FASTEST_PATH;
+                        break;
+                    case FASTEST_PATH:
+                        status.setText("fastest path status");
+                        status.setBackgroundColor(Color.parseColor("#33FCFF"));
+                        myStatus = STATUS.EXPLORATION;
+                        break;
+                    case EXPLORATION:
+                        status.setText("exploring status");
+                        status.setBackgroundColor(Color.parseColor("#FFBB33"));
+                        myStatus = STATUS.ERROR;
+                        break;
+                    case ERROR:
+                        status.setText("error status");
+                        status.setBackgroundColor(Color.parseColor("#FF3333"));
+                        myStatus = STATUS.DEFAULT;
+                        break;
+                    default:
+                        myStatus = STATUS.DEFAULT;
+                }
+            }
+        });
 
         //  Send custom command F1, if connected to remote device
         customCommand1Button.setOnClickListener(new View.OnClickListener() {
