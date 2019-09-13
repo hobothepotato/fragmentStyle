@@ -1,10 +1,13 @@
 package com.example.fragmentstyle;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,11 +46,25 @@ public class MainActivity extends AppCompatActivity implements ReconfigureDialog
     private BluetoothService bluetoothService = BluetoothService.getInstance();
     private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
+    private int androidVersion; //define at top of code as a variable
+    private int REQUEST_ID = 1;
+
+    private void requestPermissions(){
+        androidVersion = Build.VERSION.SDK_INT;
+        if (androidVersion >= 23){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                    }, REQUEST_ID);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(MY_TAG, "Started MainActivity.");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        requestPermissions();
 
         //Fragments
         fm = getSupportFragmentManager();

@@ -1,14 +1,17 @@
 package com.example.fragmentstyle;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -223,12 +226,20 @@ public class BluetoothFragment extends Fragment {
                         break;
                     case BluetoothDevice.ACTION_FOUND:
                         //  Bluetooth device discovered, get information from Intent
-                        Log.d(MY_TAG, "I am in case action found.");
-                        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                        String deviceName = device.getName();
-                        mDiscoveredDeviceListAdapter.add(deviceName);
-                        mDiscoveredDeviceListAdapter.notifyDataSetChanged();
-                        mDiscoveredDevices.add(device);
+                        try {
+                            Log.d(MY_TAG, "I am in case action found.");
+                            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                            String deviceName = device.getName();
+                            if( deviceName == null) {
+                                Log.d(MY_TAG, "the device name that is discovered is: " + device.getAddress());
+                                break;
+                            }
+                            mDiscoveredDeviceListAdapter.add(deviceName);
+                            mDiscoveredDeviceListAdapter.notifyDataSetChanged();
+                            mDiscoveredDevices.add(device);
+                        }catch(Exception e){
+                            break;
+                        }
                         break;
                 }
             }
