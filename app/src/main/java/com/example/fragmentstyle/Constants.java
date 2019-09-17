@@ -38,9 +38,14 @@ public interface Constants {
     String ROBOT_COMMAND_COORDINATES_START = ROBOT_COMMAND_PREFIX + "coords_start";
     String ROBOT_COMMAND_COORDINATES_WAYPOINT = ROBOT_COMMAND_PREFIX + "";
 
-    /**
-     * JSON Objects from Pi
-     */
+    // enum for status bar
+    enum Status {
+        CALIBRATING,
+        TURNING_LEFT,
+        TURNING_RIGHT,
+
+    };
+
 
     /**
      * Arena Action constants
