@@ -31,6 +31,8 @@ import com.example.fragmentstyle.Preferences;
 
 import static com.example.fragmentstyle.Constants.ARENA_COLUMN_COUNT;
 import static com.example.fragmentstyle.Constants.ARENA_NONE;
+import static com.example.fragmentstyle.Constants.ARENA_PLACING_ROBOT;
+import static com.example.fragmentstyle.Constants.ARENA_PLACING_WAYPOINT;
 import static com.example.fragmentstyle.Constants.ARENA_ROW_COUNT;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_BEGIN_EXPLORATION;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_BEGIN_FASTEST;
@@ -62,6 +64,8 @@ public class ArenaFragment extends Fragment {
     Button placeWaypointButton;
     Button exploreButton;
     Button fastestPathButton;
+    Button gridRobotBtn;
+    Button gridWaypointBtn;
     Switch bluetoothStatusSwitch;
 
     //  Dialog
@@ -146,7 +150,14 @@ public class ArenaFragment extends Fragment {
         //  Add ArenaView to frame
         arenaView = new ArenaView(getContext());
         arenaView.setFragment(this);
+        // Set a way to touch grid to set things.
         arenaFrame.addView(arenaView);
+
+        //  Btn to set actions on Grid.
+        gridRobotBtn = view.findViewById(R.id.robotGridBtn);
+        gridRobotBtn.setOnClickListener(gridRobotBtnOnClickListener);
+        gridWaypointBtn = view.findViewById(R.id.waypointGridBtn);
+        gridWaypointBtn.setOnClickListener(gridWaypointBtnOnClickListener);
 
         //  Arena Status Text
         robotStatusText = view.findViewById(R.id.arena_robot_status);
@@ -395,6 +406,22 @@ public class ArenaFragment extends Fragment {
             WaypointCoordsDialogFragment dialog = new WaypointCoordsDialogFragment();
             //  Show dialog
             dialog.show(getFragmentManager(), "MAP_DESC");
+        }
+    };
+
+    private View.OnClickListener gridRobotBtnOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            robotStatusText.setText("Setting Robot on Grid");
+            arenaView.setArenaAction(ARENA_PLACING_ROBOT);
+        }
+    };
+
+    private View.OnClickListener gridWaypointBtnOnClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            robotStatusText.setText("Setting Waypoint on Grid");
+            arenaView.setArenaAction(ARENA_PLACING_WAYPOINT);
         }
     };
 

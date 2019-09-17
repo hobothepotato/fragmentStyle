@@ -21,6 +21,7 @@ import static com.example.fragmentstyle.Cell.Type2.OBSTACLE;
 public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
 
     private final String TAG = "ARENA_VIEW";
+    private final String MY_TAG = "Shawn_Log: ArenaView:";
     private MainThread thread;
 
     //  Parent
@@ -135,10 +136,17 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
         float x = event.getX();
         float y = event.getY();
         Cell cell = getTouchedCell(x, y);
-
+        Log.d(MY_TAG, "action: "+event.getAction());
+        // ACTION_DOWN = 0
+        // ACTION_UP = 1
+        // ACTION_MOVE = 2
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (cell != null) {
+                    // ARENA_NONE = 100
+                    // ARENA_PLACING_ROBOT = 101
+                    // ARENA_PLACING_WAYPOINT = 102
+                    Log.d(MY_TAG, "arenaAction: ACTION_DOWN: "+arenaAction);
                     switch (arenaAction) {
                         case ARENA_PLACING_ROBOT:
                             //  Place robot in Arena
@@ -166,6 +174,8 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (cell != null) {
+                    // ARENA_PLACING_ROBOT = 101
+                    Log.d(MY_TAG, "arenaAction: ACTION_MOVE: "+arenaAction);
                     switch (arenaAction) {
                         case ARENA_PLACING_ROBOT:
                             //  Rotate robot in Arena
@@ -183,6 +193,8 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                // ARENA_PLACING_ROBOT = 101
+                Log.d(MY_TAG, "arenaAction: ACTION_UP: "+arenaAction);
                 switch (arenaAction) {
                     case ARENA_PLACING_ROBOT:
                         if (robot != null) {
