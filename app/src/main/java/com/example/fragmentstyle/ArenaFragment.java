@@ -433,12 +433,9 @@ public class ArenaFragment extends Fragment {
     private View.OnClickListener gridWaypointBtnOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v){
-            //robotStatusText.setText("Setting Waypoint on Grid");
-//            setStatus(STATUS.CUSTOM, "Setting waypoint on Grid");
-//            arenaView.setArenaAction(ARENA_PLACING_WAYPOINT);
-            if(testval == 0) arenaView.moveRobot(0,0, 0);
-            else arenaView.moveRobot(testval, 0, 0);
-            testval++;
+            robotStatusText.setText("Setting Waypoint on Grid");
+            setStatus(STATUS.CUSTOM, "Setting waypoint on Grid");
+            arenaView.setArenaAction(ARENA_PLACING_WAYPOINT);
         }
     };
 

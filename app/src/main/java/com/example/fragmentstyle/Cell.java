@@ -127,4 +127,12 @@ class Cell {
     int getY() {
         return y;
     }
+
+    int getRowIndex(){
+        return row;
+    }
+
+    int getColumnIndex(){
+        return col;
+    }
 }
