@@ -2,6 +2,7 @@ package com.example.fragmentstyle;
 
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,7 @@ import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_COORDINATES_WAYP
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_FORWARD;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_LEFT;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_RIGHT;
+import static com.example.fragmentstyle.Constants.STATUS;
 
 public class ArenaFragment extends Fragment {
 
@@ -274,7 +276,15 @@ public class ArenaFragment extends Fragment {
         Matcher matcher2;
         String[] contents;
         Log.d(MY_TAG, "process Message: state: "+state);
-        if (state == State.EXPLORING) {
+
+        if (message.startsWith("/s")){
+            String newmessage;
+            newmessage = message.substring(2);
+            Log.d(TAG, "processMessage: "+newmessage);
+            setStatus(STATUS.CUSTOM, newmessage);
+        }
+
+        else if (state == State.EXPLORING) {
             /**
              * Messages arriving have to be deconstructed and processed accordingly.
              *  Messages come in the following format:
@@ -565,6 +575,41 @@ public class ArenaFragment extends Fragment {
         }
     };
 
+    private void setStatus(STATUS type, String message){
+        switch (type){
+            case IDLE:
+                //do something
+                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                robotStatusText.setText("Idling.....");
+                break;
+            case ERROR:
+                //do something
+                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                break;
+            case CUSTOM:
+                //do something
+                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                break;
+            case MOVEMENT:
+                //do sometthing
+                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                break;
+            case CALIBRATING:
+                //do something
+                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                break;
+            case EXPLORATION:
+                //do something
+                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                break;
+            case FASTEST_PATH:
+                //do seomthing
+                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                break;
+        }
+        robotStatusText.setText(message);
+    }
+
     /**
      * Handle messages from BluetoothService
      */
@@ -575,6 +620,7 @@ public class ArenaFragment extends Fragment {
                 Log.d(MY_TAG, "ArenaFragment Handler");
                 Log.d(MY_TAG, "BluetoothServiceMessageHandler: message.what: "+message.what);
                 // 0 = Message_read
+                // 1 = message_write
                 // 1 = message_write
                 // 100 = BT_Connected
                 switch (message.what) {
