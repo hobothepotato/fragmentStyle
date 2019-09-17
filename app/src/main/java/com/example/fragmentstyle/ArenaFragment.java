@@ -48,6 +48,7 @@ public class ArenaFragment extends Fragment {
 
     private final String TAG = "ARENA_FRAG:";
     private String MY_TAG = " Shawn_Log: ArenaFragment: ";
+    private static int testval = 0;
 
     //  Bluetooth Service
     private static final BluetoothService bs = BluetoothService.getInstance();
@@ -411,7 +412,8 @@ public class ArenaFragment extends Fragment {
         @Override
         public void onClick(View view) {
             //  Reset status text
-            robotStatusText.setText(R.string.place_waypoint);
+            setStatus(STATUS.CUSTOM, String.valueOf(R.string.place_waypoint));
+            //robotStatusText.setText(R.string.place_waypoint);
             //  Create new Dialog
             WaypointCoordsDialogFragment dialog = new WaypointCoordsDialogFragment();
             //  Show dialog
@@ -422,7 +424,8 @@ public class ArenaFragment extends Fragment {
     private View.OnClickListener gridRobotBtnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            robotStatusText.setText("Setting Robot on Grid");
+            //robotStatusText.setText("Setting Robot on Grid");
+            setStatus(STATUS.CUSTOM, "Setting Robot on Grid");
             arenaView.setArenaAction(ARENA_PLACING_ROBOT);
         }
     };
@@ -430,8 +433,12 @@ public class ArenaFragment extends Fragment {
     private View.OnClickListener gridWaypointBtnOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v){
-            robotStatusText.setText("Setting Waypoint on Grid");
-            arenaView.setArenaAction(ARENA_PLACING_WAYPOINT);
+            //robotStatusText.setText("Setting Waypoint on Grid");
+//            setStatus(STATUS.CUSTOM, "Setting waypoint on Grid");
+//            arenaView.setArenaAction(ARENA_PLACING_WAYPOINT);
+            if(testval == 0) arenaView.moveRobot(0,0, 0);
+            else arenaView.moveRobot(testval, 0, 0);
+            testval++;
         }
     };
 
@@ -472,7 +479,8 @@ public class ArenaFragment extends Fragment {
                             bs.sendMessageToRemoteDevice(ROBOT_COMMAND_BEGIN_EXPLORATION);
                             //  Set state
                             state = State.EXPLORING;
-                            robotStatusText.setText(R.string.robot_status_exploring);
+                            //robotStatusText.setText(R.string.robot_status_exploring);
+                            setStatus(STATUS.EXPLORATION, String.valueOf(R.string.robot_status_exploring));
                         } else {
                             Toast.makeText(getContext(), "Bluetooth is not connected", Toast.LENGTH_LONG).show();
                             //  Switch back to Bluetooth Fragment
@@ -513,7 +521,8 @@ public class ArenaFragment extends Fragment {
                             bs.sendMessageToRemoteDevice(ROBOT_COMMAND_BEGIN_FASTEST);
                             //  Set state
                             state = State.FASTEST;
-                            robotStatusText.setText(R.string.robot_status_fastest_path);
+                            //robotStatusText.setText(R.string.robot_status_fastest_path);
+                            setStatus(STATUS.FASTEST_PATH, String.valueOf(R.string.robot_status_fastest_path));
                         } else {
                             Toast.makeText(getContext(), "Bluetooth is not connected", Toast.LENGTH_LONG).show();
                             //  Switch back to Bluetooth Fragment
@@ -535,7 +544,8 @@ public class ArenaFragment extends Fragment {
         @Override
         public void onClick(View view) {
             //  Reset status text
-            robotStatusText.setText(R.string.robot_status_unknown);
+            //robotStatusText.setText(R.string.robot_status_unknown);
+            setStatus(STATUS.CUSTOM, String.valueOf(R.string.robot_status_unknown));
             //  Create new Dialog
             MapDescriptorDialogFragment dialog = new MapDescriptorDialogFragment();
             //  Passing arguments to Dialog
@@ -556,11 +566,13 @@ public class ArenaFragment extends Fragment {
             if(arenaView.getManualArena() == 0){
                 arenaView.setManualArena(1);
                 bs.sendMessageToRemoteDevice("ManualMode");
-                robotStatusText.setText("In Manual Receiving Mode");
+                //robotStatusText.setText("In Manual Receiving Mode");
+                setStatus(STATUS.CUSTOM, "In Manual Receiving Mode");
                 manualBtn.setText("Automatic");
             }else{
-                bs.sendMessageToRemoteDevice("AutomaticMode");
-                robotStatusText.setText("In Automatic Receiving Mode");
+                bs.sendMessageToRemoteDevice("ManualMode");
+                //robotStatusText.setText("In Automatic Receiving Mode");
+                setStatus(STATUS.CUSTOM, "In Automatic Receiving Mode");
                 arenaView.setManualArena(0);
                 manualBtn.setText("Manual");
             }

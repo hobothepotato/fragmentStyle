@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class Robot {
 
@@ -36,7 +37,6 @@ public class Robot {
         //  Set Robot dimensions and shapes
         this.position = new Point(x, y);
         this.bounds = new Rect(position.x - (width / 3), position.y - (height / 3) * 2, position.x + (width / 3) * 2, position.y + (height / 3));
-
         //  Draw direction rectangle
         drawTriangle();
     }

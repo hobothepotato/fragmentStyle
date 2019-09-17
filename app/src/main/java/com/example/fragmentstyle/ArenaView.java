@@ -150,7 +150,12 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
                     switch (arenaAction) {
                         case ARENA_PLACING_ROBOT:
                             //  Place robot in Arena
-                            robot = new Robot(cell.getX(), cell.getY(), ROBOT_HEIGHT, ROBOT_WIDTH);
+                            Log.d(MY_TAG, "Robot coordinates: ("+cell.getX()+","+cell.getY()+")");
+                            //robot = new Robot(cell.getX(), cell.getY(), ROBOT_HEIGHT, ROBOT_WIDTH);
+                            double newX = Math.floor(cell.getX()/100);
+                            double newY = Math.floor(cell.getY()/ 100);
+                            Log.d(MY_TAG, "Robot coordinates new : ("+newX+","+newY+")");
+                            moveRobot((int)newX, (int)newY, 0);
                             break;
                         case ARENA_PLACING_WAYPOINT:
                             //  Place waypoint in Arena
