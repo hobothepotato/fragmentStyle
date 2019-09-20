@@ -50,7 +50,6 @@ public class ArenaFragment extends Fragment {
 
     private final String TAG = "ARENA_FRAG:";
     private String MY_TAG = " Shawn_Log: ArenaFragment: ";
-    private static int testval = 0;
 
     private static Map<Integer, String> myMap = new HashMap<Integer, String>() {{
         //TODO put in appropriate identifier for each image
@@ -220,6 +219,7 @@ public class ArenaFragment extends Fragment {
         String savedP1Descriptor = Preferences.readPreference(getContext(), R.string.arena_p1_descriptor);
         String savedP2Descriptor = Preferences.readPreference(getContext(), R.string.arena_p2_descriptor);
         String savedWaypoint = Preferences.readPreference(getContext(), R.string.arena_waypoint);
+        Log.d(MY_TAG, "loadSavedArena: savedWaypoint: "+savedWaypoint);
 
         //  Load saved robot position and direction
         if (savedRobotPosition.trim().length() != 0) {
@@ -293,9 +293,7 @@ public class ArenaFragment extends Fragment {
         String robotMidY = "";
         String robotDir = "";
         Pattern pattern;
-        Pattern pattern2;
         Matcher matcher;
-        Matcher matcher2;
         String[] contents;
         Log.d(MY_TAG, "process Message: state: "+state);
 
@@ -331,9 +329,6 @@ public class ArenaFragment extends Fragment {
                 *   is lost. A single buffer is likely to only concatenate
                 *   two to three steps, and is an acceptable loss.
                 * */
-                pattern2 = Pattern.compile("status:[ a-zA-Z]+");
-                matcher2 = pattern2.matcher(message);
-                if(matcher2.find()) robotStatusText.setText(message);
                 while(matcher.find()) {
                     Log.d(MY_TAG, "IN WHILE LOOP");
                     message = matcher.group();
@@ -462,7 +457,7 @@ public class ArenaFragment extends Fragment {
     private View.OnClickListener gridWaypointBtnOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v){
-            robotStatusText.setText("Setting Waypoint on Grid");
+            //robotStatusText.setText("Setting Waypoint on Grid");
             setStatus(STATUS.CUSTOM, "Setting waypoint on Grid");
             arenaView.setArenaAction(ARENA_PLACING_WAYPOINT);
         }
@@ -494,8 +489,8 @@ public class ArenaFragment extends Fragment {
                             //  Clear Arena
                             arenaView.clearArena();
                             //  Place robot at default position
-                            arenaView.moveRobot(1, 1, 180);
-                            Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
+                           // arenaView.moveRobot(1, 1, 180);
+                            //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             //  Send way point coordinates
                             Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
                             bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_WAYPOINT + "" + waypointMsg);
@@ -506,7 +501,7 @@ public class ArenaFragment extends Fragment {
                             //  Set state
                             state = State.EXPLORING;
                             //robotStatusText.setText(R.string.robot_status_exploring);
-                            setStatus(STATUS.EXPLORATION, String.valueOf(R.string.robot_status_exploring));
+                            setStatus(STATUS.EXPLORATION, "Exploring");
                         } else {
                             Toast.makeText(getContext(), "Bluetooth is not connected", Toast.LENGTH_LONG).show();
                             //  Switch back to Bluetooth Fragment
@@ -541,14 +536,14 @@ public class ArenaFragment extends Fragment {
                         //  Send command to remote device to initiate fastest path
                         if (bs.getState() == BluetoothService.State.CONNECTED) {
                             //  Place robot at default position
-                            arenaView.moveRobot(1, 1, 180);
-                            Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
+//                            arenaView.moveRobot(1, 1, 180);
+//                            Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             //  Send command to remote device
                             bs.sendMessageToRemoteDevice(ROBOT_COMMAND_BEGIN_FASTEST);
                             //  Set state
                             state = State.FASTEST;
                             //robotStatusText.setText(R.string.robot_status_fastest_path);
-                            setStatus(STATUS.FASTEST_PATH, String.valueOf(R.string.robot_status_fastest_path));
+                            setStatus(STATUS.FASTEST_PATH, "Fastest Path");
                         } else {
                             Toast.makeText(getContext(), "Bluetooth is not connected", Toast.LENGTH_LONG).show();
                             //  Switch back to Bluetooth Fragment
