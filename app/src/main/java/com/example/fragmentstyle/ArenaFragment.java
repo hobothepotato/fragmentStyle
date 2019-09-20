@@ -283,88 +283,96 @@ public class ArenaFragment extends Fragment {
             newmessage = message.substring(2);
             Log.d(TAG, "processMessage: "+newmessage);
             setStatus(STATUS.CUSTOM, newmessage);
+            //TODO case statement for status handling
         }
 
-        else if (state == State.EXPLORING) {
-            /**
-             * Messages arriving have to be deconstructed and processed accordingly.
-             *  Messages come in the following format:
-             *      paddedP1, paddedP2, x, y, Direction (i.e. NORTH, SOUTH, EAST, WEST)
-             *  Example:
-             *      ffff...ffff,0000...800,1,14,NORTH
-             */
-            Log.d(MY_TAG, "Process Message (EXPLORE) message: "+message);
-            //  Regex expression to match correct messages
-            pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,(?:(?:north|south)(?:[ ](?:east|west))?|east|west)", Pattern.CASE_INSENSITIVE);
-            //  Matcher that performs matching of regex to message
-            matcher = pattern.matcher(message);
-            /*
-            *   If the correct message is found at the start of the message,
-            *   return the correct message and perform processing,
-            *   while dropping any concatenated messages, if any.
-            *
-            *   Here, we drop concatenated messages as less information
-            *   is lost. A single buffer is likely to only concatenate
-            *   two to three steps, and is an acceptable loss.
-            * */
-            pattern2 = Pattern.compile("status:[ a-zA-Z]+");
-            matcher2 = pattern2.matcher(message);
-            if(matcher2.find()) robotStatusText.setText(message);
-            while(matcher.find()) {
-                Log.d(MY_TAG, "IN WHILE LOOP");
-                message = matcher.group();
-                //  Get contents of message
-                contents = message.split(",");
-                String paddedP1 = contents[0].trim();
-                String paddedP2 = contents[1].trim();
-                robotMidX = contents[2].trim();
-                robotMidY = contents[3].trim();
-                robotDir = contents[4].trim().toLowerCase();
-                Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir);
+        else if (message.startsWith("/m")){
+            message = message.substring(2);
+            if (state == State.EXPLORING) {
+                /**
+                 * Messages arriving have to be deconstructed and processed accordingly.
+                 *  Messages come in the following format:
+                 *      paddedP1, paddedP2, x, y, Direction (i.e. NORTH, SOUTH, EAST, WEST)
+                 *  Example:
+                 *      ffff...ffff,0000...800,1,14,NORTH
+                 */
+                Log.d(MY_TAG, "Process Message (EXPLORE) message: "+message);
+                //  Regex expression to match correct messages
+                pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,(?:(?:north|south)(?:[ ](?:east|west))?|east|west)", Pattern.CASE_INSENSITIVE);
+                //  Matcher that performs matching of regex to message
+                matcher = pattern.matcher(message);
+                /*
+                *   If the correct message is found at the start of the message,
+                *   return the correct message and perform processing,
+                *   while dropping any concatenated messages, if any.
+                *
+                *   Here, we drop concatenated messages as less information
+                *   is lost. A single buffer is likely to only concatenate
+                *   two to three steps, and is an acceptable loss.
+                * */
+                pattern2 = Pattern.compile("status:[ a-zA-Z]+");
+                matcher2 = pattern2.matcher(message);
+                if(matcher2.find()) robotStatusText.setText(message);
+                while(matcher.find()) {
+                    Log.d(MY_TAG, "IN WHILE LOOP");
+                    message = matcher.group();
+                    //  Get contents of message
+                    contents = message.split(",");
+                    String paddedP1 = contents[0].trim();
+                    String paddedP2 = contents[1].trim();
+                    robotMidX = contents[2].trim();
+                    robotMidY = contents[3].trim();
+                    robotDir = contents[4].trim().toLowerCase();
+                    Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir);
 
-                //  Update map with P1 descriptor and save into SharedPreferences for future use
-                arenaView.updateMapP1(paddedP1);
-                Preferences.savePreference(getContext(), R.string.arena_p1_descriptor, paddedP1);
+                    //  Update map with P1 descriptor and save into SharedPreferences for future use
+                    arenaView.updateMapP1(paddedP1);
+                    Preferences.savePreference(getContext(), R.string.arena_p1_descriptor, paddedP1);
 
-                //  Update map with P2 descriptor and sae into SharedPreferences for future use
-                arenaView.updateMapP2(paddedP2);
-                Preferences.savePreference(getContext(), R.string.arena_p2_descriptor, paddedP2);
+                    //  Update map with P2 descriptor and sae into SharedPreferences for future use
+                    arenaView.updateMapP2(paddedP2);
+                    Preferences.savePreference(getContext(), R.string.arena_p2_descriptor, paddedP2);
 
-                //  Move robot
-                moveRobot(robotMidX, robotMidY, robotDir);
+                    //  Move robot
+                    moveRobot(robotMidX, robotMidY, robotDir);
+                }
+            } else if (state == State.FASTEST) {
+                Log.d(MY_TAG, "Process Message (FASTEST) message: "+message);
+                /**
+                 * Messages arriving have to be deconstructed and processed accordingly
+                 *  Messages come in the following format:
+                 *      x, y, Direction (i.e. NORTH, SOUTH, EAST, WEST)
+                 *  Example:
+                 *      1,1,NORTH
+                 */
+                //  Regex expression to match correct messages
+                pattern = Pattern.compile("[0-9]+,[0-9]+,(?:(?:north|south)(?:[ ](?:east|west))?|east|west)", Pattern.CASE_INSENSITIVE);
+                //  Matcher that performs matching of regex to message
+                matcher = pattern.matcher(message);
+                /*
+                *   If correct messages are found, perform processing for each message.
+                *
+                *   Here, we perform a more diligent search for correct messages as
+                *   more information can be lost due to a smaller message size, if
+                *   we were to drop all messages that did not arrive first.
+                * */
+                while (matcher.find()) {
+                    message = matcher.group();
+
+                    //  Get contents of message
+                    contents = message.split(",");
+                    robotMidX = contents[0].trim();
+                    robotMidY = contents[1].trim();
+                    robotDir = contents[2].trim().toLowerCase();
+
+                    //  Move robot
+                    moveRobot(robotMidX, robotMidY, robotDir);
+                }
             }
-        } else if (state == State.FASTEST) {
-            Log.d(MY_TAG, "Process Message (FASTEST) message: "+message);
-            /**
-             * Messages arriving have to be deconstructed and processed accordingly
-             *  Messages come in the following format:
-             *      x, y, Direction (i.e. NORTH, SOUTH, EAST, WEST)
-             *  Example:
-             *      1,1,NORTH
-             */
-            //  Regex expression to match correct messages
-            pattern = Pattern.compile("[0-9]+,[0-9]+,(?:(?:north|south)(?:[ ](?:east|west))?|east|west)", Pattern.CASE_INSENSITIVE);
-            //  Matcher that performs matching of regex to message
-            matcher = pattern.matcher(message);
-            /*
-            *   If correct messages are found, perform processing for each message.
-            *
-            *   Here, we perform a more diligent search for correct messages as
-            *   more information can be lost due to a smaller message size, if
-            *   we were to drop all messages that did not arrive first.
-            * */
-            while (matcher.find()) {
-                message = matcher.group();
-
-                //  Get contents of message
-                contents = message.split(",");
-                robotMidX = contents[0].trim();
-                robotMidY = contents[1].trim();
-                robotDir = contents[2].trim().toLowerCase();
-
-                //  Move robot
-                moveRobot(robotMidX, robotMidY, robotDir);
-            }
+        }
+        else if(message.startsWith("/i")){
+            //TODO implement image labling here
+            message =null;
         }
     }
 
