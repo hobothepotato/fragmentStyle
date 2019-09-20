@@ -275,17 +275,26 @@ public class ArenaFragment extends Fragment {
         Matcher matcher;
         String[] contents;
         Log.d(MY_TAG, "process Message: state: "+state);
-
+        //Messages dealing with status labels
         if (message.startsWith("/s")){
             String newmessage;
             newmessage = message.substring(2);
-            Log.d(TAG, "processMessage: "+newmessage);
+            Log.d(MY_TAG, "processMessage: Status Label: "+newmessage);
             setStatus(STATUS.CUSTOM, newmessage);
             //TODO case statement for status handling
         }
-
+        //Implemented just for Checklist. Update map when Manual Mode.
+        else if (message.startsWith("{\"grid\"")){
+            message = message.replace("{\"grid\" : \"", "");
+            message = message.replace("\"}", "");
+            // i think the amdtool send over wrong format for obstacle. when 8000000..... it sends 00000......4000000;
+            arenaView.updateMapP1("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+            arenaView.updateMapP2(message);
+        }
+        //Message dealing with Map
         else if (message.startsWith("/m")){
             message = message.substring(2);
+            Log.d(MY_TAG, "processmessage: Processing /m messages");
             if (state == State.EXPLORING) {
                 /**
                  * Messages arriving have to be deconstructed and processed accordingly.
@@ -294,7 +303,6 @@ public class ArenaFragment extends Fragment {
                  *  Example:
                  *      ffff...ffff,0000...800,1,14,NORTH
                  */
-                Log.d(MY_TAG, "Process Message (EXPLORE) message: "+message);
                 //  Regex expression to match correct messages
                 pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,(?:(?:north|south)(?:[ ](?:east|west))?|east|west)", Pattern.CASE_INSENSITIVE);
                 //  Matcher that performs matching of regex to message
@@ -309,7 +317,6 @@ public class ArenaFragment extends Fragment {
                 *   two to three steps, and is an acceptable loss.
                 * */
                 while(matcher.find()) {
-                    Log.d(MY_TAG, "IN WHILE LOOP");
                     message = matcher.group();
                     //  Get contents of message
                     contents = message.split(",");
@@ -365,9 +372,14 @@ public class ArenaFragment extends Fragment {
                 }
             }
         }
+        //Messages dealing with Image recognition id
         else if(message.startsWith("/i")){
             //TODO implement image labling here
             message =null;
+        }
+        else{
+            //ERROR AREA NOT SUPPOSE TO APPEAR HERE!!!
+            Log.d(MY_TAG, "ProcessMessage() ERROR! message not suppose to be in this location!");
         }
     }
 
@@ -455,26 +467,27 @@ public class ArenaFragment extends Fragment {
             final String waypointMsg = arenaView.getWaypointInfo();
 
             //  Check if waypoint is placed
-            if (waypointMsg.trim().length() != 0) {
+//            if (waypointMsg.trim().length() != 0) {
                 //  Get way point information for display
-                String[] wp = waypointMsg.split(",");
+                //String[] wp = waypointMsg.split(",");
                 //  Build alert dialog
                 builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Start Exploration");
-                builder.setMessage("Do you really want to start exploration?\n\nWaypoint is at (" + wp[0] + "," + wp[1] + ")");
-                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                //builder.setMessage("Do you really want to start exploration?\n\nWaypoint is at (" + wp[0] + "," + wp[1] + ")");
+//                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int whichButton) {
                         if (bs.getState() == BluetoothService.State.CONNECTED) {
                             //  Clear Arena
                             arenaView.clearArena();
                             //  Place robot at default position
-                           // arenaView.moveRobot(1, 1, 180);
+                            int[] robotLoc = arenaView.getRobotLoc();
+                            arenaView.moveRobot(robotLoc[0], robotLoc[1], robotLoc[2]);
                             //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             //  Send way point coordinates
-                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
-                            bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_WAYPOINT + "" + waypointMsg);
+//                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
+//                            bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_WAYPOINT + "" + waypointMsg);
                             //  Save way point coordinates
-                            Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
+                            //Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
                             //  Send explore keyword
                             bs.sendMessageToRemoteDevice(ROBOT_COMMAND_BEGIN_EXPLORATION);
                             //  Set state
@@ -486,14 +499,15 @@ public class ArenaFragment extends Fragment {
                             //  Switch back to Bluetooth Fragment
                             MainActivity.addFragment(MainActivity.BLUETOOTH_TAG);
                         }
-                    }});
-                builder.setNegativeButton(android.R.string.no, null);
-
-                dialog = builder.create();
-                dialog.show();
-            } else {
-                Toast.makeText(getContext(), "Waypoint is not placed", Toast.LENGTH_LONG).show();
-            }
+                   // }
+//    });
+//                builder.setNegativeButton(android.R.string.no, null);
+//
+//                dialog = builder.create();
+//                dialog.show();
+//            } else {
+//                Toast.makeText(getContext(), "Waypoint is not placed", Toast.LENGTH_LONG).show();
+//            }
         }
     };
 
@@ -515,8 +529,8 @@ public class ArenaFragment extends Fragment {
                         //  Send command to remote device to initiate fastest path
                         if (bs.getState() == BluetoothService.State.CONNECTED) {
                             //  Place robot at default position
-//                            arenaView.moveRobot(1, 1, 180);
-//                            Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
+                           // arenaView.moveRobot(1, 1, 180);
+                           // Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             //  Send command to remote device
                             bs.sendMessageToRemoteDevice(ROBOT_COMMAND_BEGIN_FASTEST);
                             //  Set state
@@ -545,7 +559,7 @@ public class ArenaFragment extends Fragment {
         public void onClick(View view) {
             //  Reset status text
             //robotStatusText.setText(R.string.robot_status_unknown);
-            setStatus(STATUS.CUSTOM, String.valueOf(R.string.robot_status_unknown));
+            setStatus(STATUS.CUSTOM, "Unknown");
             //  Create new Dialog
             MapDescriptorDialogFragment dialog = new MapDescriptorDialogFragment();
             //  Passing arguments to Dialog

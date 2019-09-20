@@ -62,6 +62,8 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
     //  Arena objects
     private StringBuilder sb;
 
+    private int robotX = 1, robotY = 1, robotRotation = 270;
+
     public ArenaView(Context context) {
         super(context);
 
@@ -157,6 +159,7 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
                             Log.d(MY_TAG, "Robot coordinates new : ("+newX+","+newY+")");
                             //robot = new Robot((int)newX, (int)newY, ROBOT_HEIGHT, ROBOT_WIDTH);
                             moveRobot(cell.getColumnIndex(), Math.abs(19-cell.getRowIndex()), 0);
+                            setRobotLoc(cell.getColumnIndex(), Math.abs(19-cell.getRowIndex()));
                             break;
                         case ARENA_PLACING_WAYPOINT:
                             //  Place waypoint in Arena
@@ -187,12 +190,16 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
                             //  Rotate robot in Arena
                             if (x > (robot.getPosition().x + ROBOT_WIDTH)) {
                                 robot.setRotation(90);
+                                robotRotation = 90;
                             } else if (y > (robot.getPosition().y + ROBOT_HEIGHT)) {
                                 robot.setRotation(180);
+                                robotRotation = 180;
                             } else if (x < robot.getPosition().x) {
                                 robot.setRotation(270);
+                                robotRotation = 270;
                             } else {
                                 robot.setRotation(0);
+                                robotRotation = 0;
                             }
                             break;
                     }
@@ -548,6 +555,19 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
                 cells[i][j].setType2(Cell.Type2.EMPTY);
             }
         }
+    }
+    public void setRobotLoc(int x, int y){
+        this.robotX = x;
+        this.robotY = y;
+    }
+
+    public int[] getRobotLoc(){
+        int[] arr = new int[3];
+        arr[0] = robotX;
+        arr[1] = robotY;
+        Log.d(MY_TAG, "robot rotation: "+robotRotation);
+        arr[2] = robotRotation;
+        return arr;
     }
 
     public void setManualArena(int state){
