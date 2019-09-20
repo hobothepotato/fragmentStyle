@@ -21,6 +21,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +51,25 @@ public class ArenaFragment extends Fragment {
     private final String TAG = "ARENA_FRAG:";
     private String MY_TAG = " Shawn_Log: ArenaFragment: ";
     private static int testval = 0;
+
+    private static Map<Integer, String> myMap = new HashMap<Integer, String>() {{
+        //TODO put in appropriate identifier for each image
+        put(1, "b");
+        put(2, "d");
+        put(3, "d");
+        put(4, "d");
+        put(5, "d");
+        put(6, "d");
+        put(7, "d");
+        put(8, "d");
+        put(9, "d");
+        put(10, "d");
+        put(11, "d");
+        put(12, "d");
+        put(13, "d");
+        put(14, "d");
+        put(15, "d");
+    }};
 
     //  Bluetooth Service
     private static final BluetoothService bs = BluetoothService.getInstance();
@@ -372,7 +393,7 @@ public class ArenaFragment extends Fragment {
         }
         else if(message.startsWith("/i")){
             //TODO implement image labling here
-            message =null;
+            message = null;
         }
     }
 
