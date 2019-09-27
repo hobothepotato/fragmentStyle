@@ -392,7 +392,7 @@ public class ArenaFragment extends Fragment {
                 Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
             }
             else{
-                storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
+                //storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
             }
         }
         else{
@@ -503,7 +503,7 @@ public class ArenaFragment extends Fragment {
                             //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             //  Send way point coordinates
 //                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
-                            // bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_WAYPOINT + "" + waypointMsg);
+                             bs.sendMessageToRemoteDevice(waypointMsg);
                             //  Save way point coordinates
                             //Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
                             //  Send explore keyword
@@ -537,7 +537,7 @@ public class ArenaFragment extends Fragment {
             //  Get way point information
             final String waypointMsg = arenaView.getWaypointInfo();
             Log.d(MY_TAG, "waypoint message: "+waypointMsg);
-            bs.sendMessageToRemoteDevice("P+"+waypointMsg);
+            //bs.sendMessageToRemoteDevice("P+"+waypointMsg);
 
             if (waypointMsg.trim().length() != 0) {
                 //  Build alert dialog

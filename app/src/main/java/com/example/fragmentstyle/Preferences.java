@@ -69,8 +69,4 @@ public class Preferences {
         editor.putString(key, json);
         editor.apply();
     }
-    public static HashMap getHashMap(Context c,String key){
-        Gson gson = new Gson();
-        String json = 
-    }
 }
