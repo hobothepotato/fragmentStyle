@@ -3,6 +3,11 @@ package com.example.fragmentstyle;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by yongj on 2/8/2018.
  */
@@ -54,5 +59,18 @@ public class Preferences {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(c.getString(res), value);
         editor.apply();
+    }
+
+    public static void saveHashMap(Context c, String key, Map myHash){
+        sp = c.getSharedPreferences(CUSTOM_COMMANDS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(myHash);
+        editor.putString(key, json);
+        editor.apply();
+    }
+    public static HashMap getHashMap(Context c,String key){
+        Gson gson = new Gson();
+        String json = 
     }
 }

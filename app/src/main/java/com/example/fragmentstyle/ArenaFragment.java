@@ -3,12 +3,12 @@ package com.example.fragmentstyle;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.graphics.Point;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -37,6 +37,7 @@ import static com.example.fragmentstyle.Constants.ARENA_NONE;
 import static com.example.fragmentstyle.Constants.ARENA_PLACING_ROBOT;
 import static com.example.fragmentstyle.Constants.ARENA_PLACING_WAYPOINT;
 import static com.example.fragmentstyle.Constants.ARENA_ROW_COUNT;
+import static com.example.fragmentstyle.Constants.IMAGE_KEY;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_BEGIN_EXPLORATION;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_BEGIN_FASTEST;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_COORDINATES_START;
@@ -45,30 +46,13 @@ import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_FORWARD;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_LEFT;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_RIGHT;
 import static com.example.fragmentstyle.Constants.STATUS;
+import static com.example.fragmentstyle.Constants.myMap;
 
 public class ArenaFragment extends Fragment {
 
     private final String TAG = "ARENA_FRAG:";
     private String MY_TAG = " Shawn_Log: ArenaFragment: ";
-
-    private static Map<Integer, String> myMap = new HashMap<Integer, String>() {{
-        //TODO put in appropriate identifier for each image
-        put(1, "b");
-        put(2, "d");
-        put(3, "d");
-        put(4, "d");
-        put(5, "d");
-        put(6, "d");
-        put(7, "d");
-        put(8, "d");
-        put(9, "d");
-        put(10, "d");
-        put(11, "d");
-        put(12, "d");
-        put(13, "d");
-        put(14, "d");
-        put(15, "d");
-    }};
+    private static Map<Point, Integer> storeImage = new HashMap<>();
 
     //  Bluetooth Service
     private static final BluetoothService bs = BluetoothService.getInstance();
@@ -394,8 +378,22 @@ public class ArenaFragment extends Fragment {
         }
         //Messages dealing with Image recognition id
         else if(message.startsWith("/i")){
+            int imageXcoord, imageYcoord,imageID;
             //TODO implement image labling here
-            message = null;
+            message = message.replace("/i","");
+            if (message.startsWith("m")){
+                message.replace("m","");
+                String[] strArray = message.split(",");
+                imageID = Integer.parseInt(strArray[0]);
+                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
+                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
+                Point fullCoord = new Point(imageXcoord,imageYcoord);
+                storeImage.put(fullCoord,imageID);
+                Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+            }
+            else{
+                storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
+            }
         }
         else{
             //ERROR AREA NOT SUPPOSE TO APPEAR HERE!!!
