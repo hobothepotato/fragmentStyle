@@ -497,14 +497,21 @@ public class ArenaFragment extends Fragment {
             temp = Preferences.getHashMap(getContext(),IMAGE_KEY);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
             String mymessage="";
-            Iterator it = temp.entrySet().iterator();
-            while (it.hasNext()){
-                Point tempPoint;
-                int myInt;
-                Map.Entry entry = (Map.Entry) it.next();
-                tempPoint = (Point) entry.getKey();
-                myInt = (Integer) entry.getValue();
-                mymessage += "("+ tempPoint.x +"," + tempPoint.y +"): Image ID" + myInt +"/n";
+            if (!temp.isEmpty()){
+
+                Iterator it = temp.entrySet().iterator();
+                while (it.hasNext()){
+                    Point tempPoint;
+                    int myInt;
+                    Map.Entry entry = (Map.Entry) it.next();
+                    tempPoint = (Point) entry.getKey();
+                    myInt = (Integer) entry.getValue();
+                    mymessage += "("+ tempPoint.x +"," + tempPoint.y +"): Image ID" + myInt +"/n";
+                }
+
+            }
+            else{
+                mymessage= "EMPTY HASHMAP";
             }
             builder1.setMessage(mymessage);
             builder1.setCancelable(true);
