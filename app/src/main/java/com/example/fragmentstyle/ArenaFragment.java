@@ -99,7 +99,6 @@ public class ArenaFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_arena, container, false);
 
@@ -517,7 +516,7 @@ public class ArenaFragment extends Fragment {
                             //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             //  Send way point coordinates
 //                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
-//                            bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_WAYPOINT + "" + waypointMsg);
+                             bs.sendMessageToRemoteDevice(waypointMsg);
                             //  Save way point coordinates
                             //Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
                             //  Send explore keyword
@@ -550,6 +549,8 @@ public class ArenaFragment extends Fragment {
 
             //  Get way point information
             final String waypointMsg = arenaView.getWaypointInfo();
+            Log.d(MY_TAG, "waypoint message: "+waypointMsg);
+            //bs.sendMessageToRemoteDevice("P+"+waypointMsg);
 
             if (waypointMsg.trim().length() != 0) {
                 //  Build alert dialog
@@ -608,16 +609,18 @@ public class ArenaFragment extends Fragment {
         @Override
         public void onClick(View view) {
             //  Clear arena
+            if(state != State.EXPLORING) {
+                Toast.makeText(getContext(), "Must be in Exploring State.", Toast.LENGTH_SHORT).show();
+                return ;
+            }
             Log.d(MY_TAG, "manualButtonClickListener arenaVIew.getManualArena(): "+arenaView.getManualArena());
             if(arenaView.getManualArena() == 0){
                 arenaView.setManualArena(1);
-                bs.sendMessageToRemoteDevice("ManualMode");
-                //robotStatusText.setText("In Manual Receiving Mode");
+                bs.sendMessageToRemoteDevice("Manual");
                 setStatus(STATUS.CUSTOM, "In Manual Receiving Mode");
                 manualBtn.setText("Automatic");
             }else{
-                bs.sendMessageToRemoteDevice("ManualMode");
-                //robotStatusText.setText("In Automatic Receiving Mode");
+                bs.sendMessageToRemoteDevice("Manual");
                 setStatus(STATUS.CUSTOM, "In Automatic Receiving Mode");
                 arenaView.setManualArena(0);
                 manualBtn.setText("Manual");
@@ -687,6 +690,7 @@ public class ArenaFragment extends Fragment {
                         String receivedMessage = message.obj.toString();
                         //  Handle message from Pi
                         Log.d(MY_TAG, "BluetoothServiceMessageHandler: receivedMessage: "+receivedMessage);
+                        Log.d(MY_TAG, "arenaManualArena(): "+arenaView.getManualArena());
                         processMessage(receivedMessage);
                         break;
                     case Constants.MESSAGE_WRITE:
