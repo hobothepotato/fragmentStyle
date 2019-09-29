@@ -383,6 +383,8 @@ public class ArenaFragment extends Fragment {
             //TODO implement image labling here
             message = message.replace("/i","");
             if (message.startsWith("m")){
+                Preferences.removeHashMap(getContext());
+                //Since its first point, remove previous saved points
                 message.replace("m","");
                 String[] strArray = message.split(",");
                 imageID = Integer.parseInt(strArray[0]);
@@ -394,6 +396,17 @@ public class ArenaFragment extends Fragment {
             }
             else{
                 storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
+                String[] strArray = message.split(",");
+                imageID = Integer.parseInt(strArray[0]);
+                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
+                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
+                Point fullCoord = new Point(imageXcoord,imageYcoord);
+                if (storeImage.containsKey(fullCoord)){
+                    Log.d(TAG, "processMessage: repeat message");
+                }
+                else{
+                    storeImage.put(fullCoord,imageID);
+                }
             }
         }
         else{
