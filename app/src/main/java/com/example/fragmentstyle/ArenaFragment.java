@@ -21,6 +21,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Point;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -388,17 +390,25 @@ public class ArenaFragment extends Fragment {
         }
         //Messages dealing with Image recognition id
         else if(message.startsWith("/i")){
+            Log.d(MY_TAG, "Message dealing with image reocognition");
             int imageXcoord, imageYcoord,imageID;
             //TODO implement image labling here
             message = message.replace("/i","");
+            Log.d(MY_TAG, "message: "+message);
             if (message.startsWith("m")){
+                Log.d(MY_TAG, "HERE I AM");
                 Preferences.removeHashMap(getContext());
                 //Since its first point, remove previous saved points
                 message.replace("m","");
+                Log.d(MY_TAG, "replace message: "+message);
                 String[] strArray = message.split(",");
-                imageID = Integer.parseInt(strArray[0]);
+                Log.d(MY_TAG, "strArray: "+ Arrays.toString(strArray));
+                Log.d(MY_TAG, "strArray[0]: "+strArray[0].toString());
+                imageID = Integer.parseInt(strArray[0].substring(1));
+                Log.d(MY_TAG, "image: "+imageID);
                 imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
                 imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
+                Log.d(MY_TAG, "X: "+imageXcoord+", Y: "+imageYcoord);
                 Point fullCoord = new Point(imageXcoord,imageYcoord);
                 storeImage.put(fullCoord,imageID);
                 Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
@@ -502,7 +512,7 @@ public class ArenaFragment extends Fragment {
             temp = Preferences.getHashMap(getContext(),IMAGE_KEY);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
             String mymessage="";
-            if (!temp.isEmpty()){
+            if (temp != null){
 
                 Iterator it = temp.entrySet().iterator();
                 while (it.hasNext()){
@@ -523,13 +533,6 @@ public class ArenaFragment extends Fragment {
 
             builder1.setPositiveButton(
                     "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            builder1.setNegativeButton(
-                    "No",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();

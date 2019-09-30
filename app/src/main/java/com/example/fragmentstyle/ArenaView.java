@@ -17,6 +17,8 @@ import static com.example.fragmentstyle.Constants.ARENA_ROBOT_SIZE_ROW;
 import static com.example.fragmentstyle.Constants.ARENA_ROW_COUNT;
 import static com.example.fragmentstyle.Cell.Type2.EMPTY;
 import static com.example.fragmentstyle.Cell.Type2.OBSTACLE;
+import static com.example.fragmentstyle.Cell.Type4.IMAGE;
+
 
 public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -468,6 +470,9 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
         //  Iterate through Arena and update accordingly
         for (int i = ARENA_ROW_COUNT - 1; i > -1; i--) {
             for (int j = 0; j < ARENA_COLUMN_COUNT; j++) {
+//                if(i == imageXVal && j == imageYVal){
+//                    cells[i][j].setType4(IMAGE);
+//                }
                 if (cells[i][j].getType() == Cell.Type.EXPLORED) {
                     //  Get each binary digit
                     character = String.valueOf(sb.charAt(k));
