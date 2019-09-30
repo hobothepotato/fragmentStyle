@@ -55,7 +55,7 @@ public class ArenaFragment extends Fragment {
 
     private final String TAG = "ARENA_FRAG:";
     private String MY_TAG = " Shawn_Log: ArenaFragment: ";
-    private static Map<Point, Integer> storeImage = new HashMap<>();
+    private static Map<Integer, Point> storeImage = new HashMap<>();
 
     //  Bluetooth Service
     private static final BluetoothService bs = BluetoothService.getInstance();
@@ -399,18 +399,18 @@ public class ArenaFragment extends Fragment {
                 Log.d(MY_TAG, "HERE I AM");
                 Preferences.removeHashMap(getContext());
                 //Since its first point, remove previous saved points
-                message.replace("m","");
+                message = message.replace("m","");
                 Log.d(MY_TAG, "replace message: "+message);
                 String[] strArray = message.split(",");
                 Log.d(MY_TAG, "strArray: "+ Arrays.toString(strArray));
                 Log.d(MY_TAG, "strArray[0]: "+strArray[0].toString());
-                imageID = Integer.parseInt(strArray[0].substring(1));
+                imageID = Integer.parseInt(strArray[0]);
                 Log.d(MY_TAG, "image: "+imageID);
                 imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
                 imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
-                Log.d(MY_TAG, "X: "+imageXcoord+", Y: "+imageYcoord);
                 Point fullCoord = new Point(imageXcoord,imageYcoord);
-                storeImage.put(fullCoord,imageID);
+                storeImage.put(imageID,fullCoord);
+                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
                 Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
             }
             else{
@@ -420,11 +420,11 @@ public class ArenaFragment extends Fragment {
                 imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
                 imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
                 Point fullCoord = new Point(imageXcoord,imageYcoord);
-                if (storeImage.containsKey(fullCoord)){
+                if (storeImage.containsKey(imageID)){
                     Log.d(TAG, "processMessage: repeat message");
                 }
                 else{
-                    storeImage.put(fullCoord,imageID);
+                    storeImage.put(imageID,fullCoord);
                 }
             }
         }
@@ -513,15 +513,17 @@ public class ArenaFragment extends Fragment {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
             String mymessage="";
             if (temp != null){
-
                 Iterator it = temp.entrySet().iterator();
                 while (it.hasNext()){
                     Point tempPoint;
                     int myInt;
                     Map.Entry entry = (Map.Entry) it.next();
-                    tempPoint = (Point) entry.getKey();
-                    myInt = (Integer) entry.getValue();
-                    mymessage += "("+ tempPoint.x +"," + tempPoint.y +"): Image ID" + myInt +"/n";
+                    tempPoint = (Point) entry.getValue();
+                    Log.d(MY_TAG, "value type:" +tempPoint.getClass());
+                    //Log.d(MY_TAG, "point received" + tempPoint.x + ","+ tempPoint.y);
+                    myInt = (Integer) entry.getKey();
+                    Log.d(MY_TAG, "Image ID: " + myInt);
+                    mymessage += "("+ tempPoint.x +"," + tempPoint.y +"): Image ID" + myInt +"\n";
                 }
 
             }

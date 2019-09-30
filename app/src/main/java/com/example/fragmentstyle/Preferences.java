@@ -2,9 +2,12 @@ package com.example.fragmentstyle;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,16 +69,18 @@ public class Preferences {
     public static void saveHashMap(Context c, String key, Map myHash){
         sp = c.getSharedPreferences(CUSTOM_COMMANDS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
+        Type hashType = new TypeToken<Map<Integer, Point>>() {}.getType();
         Gson gson = new Gson();
-        String json = gson.toJson(myHash);
+        String json = gson.toJson(myHash, hashType);
         editor.putString(key, json);
         editor.apply();
     }
     public static Map getHashMap(Context c,String key){
         sp = c.getSharedPreferences(CUSTOM_COMMANDS, Context.MODE_PRIVATE);
+        Type hashType = new TypeToken<Map<Integer, Point>>() {}.getType();
         Gson gson = new Gson();
         String json = sp.getString(key,null);
-        Map myMap = gson.fromJson(json, Map.class);
+        Map myMap = gson.fromJson(json, hashType);
         return myMap;
     }
 
