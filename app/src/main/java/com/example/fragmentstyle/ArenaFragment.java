@@ -421,10 +421,12 @@ public class ArenaFragment extends Fragment {
                 imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
                 Point fullCoord = new Point(imageXcoord,imageYcoord);
                 if (storeImage.containsKey(imageID)){
-                    Log.d(TAG, "processMessage: repeat message");
+                    Log.d(MY_TAG, "processMessage: repeat message");
                 }
                 else{
                     storeImage.put(imageID,fullCoord);
+                    Log.d(MY_TAG, "processMessage: added new points");
+                    Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
                 }
             }
         }
@@ -512,6 +514,7 @@ public class ArenaFragment extends Fragment {
             temp = Preferences.getHashMap(getContext(),IMAGE_KEY);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
             String mymessage="";
+            Log.d(MY_TAG,"Number of key-value pairs: " + temp.size());
             if (temp != null){
                 Iterator it = temp.entrySet().iterator();
                 while (it.hasNext()){
