@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Point;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,6 +74,7 @@ public class ArenaFragment extends Fragment {
     Button fastestPathButton;
     Button gridRobotBtn;
     Button gridWaypointBtn;
+    Button imgBtn;
     Switch bluetoothStatusSwitch;
 
     //  Dialog
@@ -81,6 +83,7 @@ public class ArenaFragment extends Fragment {
 
     //  Arena state
     State state = State.NONE;
+
     enum State {
         NONE, EXPLORING, FASTEST
     }
@@ -133,6 +136,8 @@ public class ArenaFragment extends Fragment {
         updateBtn = view.findViewById(R.id.updateBtn);
         manualBtn.setOnClickListener(manualButtonClickListener);
         updateBtn.setOnClickListener(updateButtonClickListener);
+        imgBtn = view.findViewById(R.id.showImg);
+        imgBtn.setOnClickListener(imageBtnOnClickListener);
 
         //  Bluetooth Status
         bluetoothStatusSwitch = view.findViewById(R.id.bluetooth_status);
@@ -490,6 +495,36 @@ public class ArenaFragment extends Fragment {
         }
     };
 
+    private View.OnClickListener imageBtnOnClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            Map temp;
+            temp = Preferences.getHashMap(getContext(),IMAGE_KEY);
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+            String mymessage="";
+            Iterator it = temp.entrySet().iterator();
+            while (it.hasNext()){
+                Point tempPoint;
+                int myInt;
+                Map.Entry entry = (Map.Entry) it.next();
+                tempPoint = (Point) entry.getKey();
+                myInt = (Integer) entry.getValue();
+                mymessage += "("+ tempPoint.x +"," + tempPoint.y +"): Image ID" + myInt +"/n";
+            }
+            builder1.setMessage(mymessage);
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
+    };
     public void setWaypoint(int x, int y) {
         arenaView.setWaypoint(x, y);
     }
@@ -640,6 +675,7 @@ public class ArenaFragment extends Fragment {
             else  Toast.makeText(getContext(), "Must set to Manual before update is available.", Toast.LENGTH_SHORT).show();
         }
     };
+
 
     private void setStatus(STATUS type, String message){
         switch (type){
