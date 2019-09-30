@@ -11,6 +11,7 @@ class Cell {
     private Type type;
     private Type2 type2;
     private Type3 type3;
+    private Type4 type4;
     private int x;
     private int y;
     private int height;
@@ -33,11 +34,17 @@ class Cell {
         NONE, WAYPOINT
     }
 
+    // Type 4
+    enum Type4 {
+        EMPTY, IMAGE
+    }
+
     Cell(int x, int y, int height, int width, int rowIndex, int colIndex) {
         paint = new Paint();
         this.type = Type.UNKNOWN;
         this.type2 = Type2.EMPTY;
         this.type3 = Type3.NONE;
+        this.type4 = Type4.EMPTY;
         this.x = x;
         this.y = y;
         this.height = height;
@@ -81,6 +88,11 @@ class Cell {
                 paint.setColor(Color.rgb(255, 193, 71));
                 break;
         }
+        // Image ID and color set
+        switch (type4){
+            case IMAGE:
+                paint.setColor(Color.rgb(0, 0,255));
+        }
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRect(cellRect, paint);
 
@@ -118,6 +130,9 @@ class Cell {
 
     void setType3(Type3 type3) {
         this.type3 = type3;
+    }
+    void setType4(Type4 type4){
+        this.type4 = type4;
     }
 
     int getX() {
