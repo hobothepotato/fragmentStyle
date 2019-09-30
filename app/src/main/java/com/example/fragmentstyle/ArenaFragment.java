@@ -307,8 +307,13 @@ public class ArenaFragment extends Fragment {
                  *  Example:
                  *      ffff...ffff,0000...800,1,14,NORTH
                  */
+                message = message.replaceAll("\\{|\\}", "");
+                message = message.replaceAll("\"", "");
+                message = message.replaceAll("robot:", "");
+                Log.d(MY_TAG, "Post append Message (EXPLORE) :"+message);
                 //  Regex expression to match correct messages
-                pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,(?:(?:north|south)(?:[ ](?:east|west))?|east|west)", Pattern.CASE_INSENSITIVE);
+                // (?:(?:north|south)(?:[ ](?:east|west))?|east|west)
+                pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,[0-9]+", Pattern.CASE_INSENSITIVE);
                 //  Matcher that performs matching of regex to message
                 matcher = pattern.matcher(message);
                 /*
@@ -328,7 +333,7 @@ public class ArenaFragment extends Fragment {
                     String paddedP2 = contents[1].trim();
                     robotMidX = contents[2].trim();
                     robotMidY = contents[3].trim();
-                    robotDir = contents[4].trim().toLowerCase();
+                    robotDir = contents[4].trim();
                     Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir);
 
                     //  Update map with P1 descriptor and save into SharedPreferences for future use
@@ -484,16 +489,16 @@ public class ArenaFragment extends Fragment {
             //  Get way point information
             final String waypointMsg = arenaView.getWaypointInfo();
 
-            //  Check if waypoint is placed
-//            if (waypointMsg.trim().length() != 0) {
-                //  Get way point information for display
-                //String[] wp = waypointMsg.split(",");
+                //Check if waypoint is placed
+                if (waypointMsg.trim().length() != 0) {
+                //Get way point information for display
+                String[] wp = waypointMsg.split(",");
                 //  Build alert dialog
                 builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Start Exploration");
-                //builder.setMessage("Do you really want to start exploration?\n\nWaypoint is at (" + wp[0] + "," + wp[1] + ")");
-//                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
+                builder.setMessage("Do you really want to start exploration?\n\nWaypoint is at (" + wp[0] + "," + wp[1] + ")");
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
                         if (bs.getState() == BluetoothService.State.CONNECTED) {
                             //  Clear Arena
                             arenaView.clearArena();
@@ -505,7 +510,7 @@ public class ArenaFragment extends Fragment {
 //                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
                              bs.sendMessageToRemoteDevice(waypointMsg);
                             //  Save way point coordinates
-                            //Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
+                            Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
                             //  Send explore keyword
                             bs.sendMessageToRemoteDevice(ROBOT_COMMAND_BEGIN_EXPLORATION);
                             //  Set state
@@ -517,15 +522,15 @@ public class ArenaFragment extends Fragment {
                             //  Switch back to Bluetooth Fragment
                             MainActivity.addFragment(MainActivity.BLUETOOTH_TAG);
                         }
-                   // }
-//    });
-//                builder.setNegativeButton(android.R.string.no, null);
-//
-//                dialog = builder.create();
-//                dialog.show();
-//            } else {
-//                Toast.makeText(getContext(), "Waypoint is not placed", Toast.LENGTH_LONG).show();
-//            }
+                    }
+    });
+                builder.setNegativeButton(android.R.string.no, null);
+
+                dialog = builder.create();
+                dialog.show();
+            } else {
+                Toast.makeText(getContext(), "Waypoint is not placed", Toast.LENGTH_LONG).show();
+            }
         }
     };
 
@@ -677,7 +682,6 @@ public class ArenaFragment extends Fragment {
                         String receivedMessage = message.obj.toString();
                         //  Handle message from Pi
                         Log.d(MY_TAG, "BluetoothServiceMessageHandler: receivedMessage: "+receivedMessage);
-                        Log.d(MY_TAG, "arenaManualArena(): "+arenaView.getManualArena());
                         processMessage(receivedMessage);
                         break;
                     case Constants.MESSAGE_WRITE:
