@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.fragmentstyle.Constants.IMAGE_KEY;
+
 /**
  * Created by yongj on 2/8/2018.
  */
@@ -68,5 +70,18 @@ public class Preferences {
         String json = gson.toJson(myHash);
         editor.putString(key, json);
         editor.apply();
+    }
+    public static Map getHashMap(Context c,String key){
+        sp = c.getSharedPreferences(CUSTOM_COMMANDS, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sp.getString(key,null);
+        Map myMap = gson.fromJson(json, Map.class);
+        return myMap;
+    }
+
+    public static void removeHashMap (Context c){
+        sp = c.getSharedPreferences(CUSTOM_COMMANDS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove(IMAGE_KEY);
     }
 }
