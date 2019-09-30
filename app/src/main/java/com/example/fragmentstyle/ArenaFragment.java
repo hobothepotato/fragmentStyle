@@ -254,16 +254,16 @@ public class ArenaFragment extends Fragment {
             //  Convert robotDir to degree values
             int rot = 0;
             switch (robotDir) {
-                case "north":
+                case "0":
                     rot = 0;
                     break;
-                case "south":
+                case "180":
                     rot = 180;
                     break;
-                case "east":
+                case "90":
                     rot = 90;
                     break;
-                case "west":
+                case "270":
                     rot = 270;
                     break;
             }
@@ -303,8 +303,8 @@ public class ArenaFragment extends Fragment {
             arenaView.updateMapP2(message);
         }
         //Message dealing with Map
-        else if (message.startsWith("/m")){
-            message = message.substring(2);
+        else if (message.startsWith("//m")){
+            message = message.replace("//m","");
             Log.d(MY_TAG, "processmessage: Processing /m messages");
             if (state == State.EXPLORING) {
                 /**
@@ -338,8 +338,8 @@ public class ArenaFragment extends Fragment {
                     contents = message.split(",");
                     String paddedP1 = contents[0].trim();
                     String paddedP2 = contents[1].trim();
-                    robotMidX = contents[2].trim();
-                    robotMidY = contents[3].trim();
+                    robotMidX = contents[3].trim();
+                    robotMidY = contents[2].trim();
                     robotDir = contents[4].trim();
                     Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir);
 
