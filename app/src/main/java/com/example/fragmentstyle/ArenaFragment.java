@@ -845,19 +845,19 @@ public class ArenaFragment extends Fragment {
         }
     };
     public static void returnSpeech(ArrayList<String> matches){
-        if(matches.contains("start exploration") || matches.contains("explore")){
+//        if(matches.contains("start exploration") || matches.contains("explore")){
+//
+//        }
+        if(matches.contains("move forward") || matches.contains("forward")){
 
-        }
-        else if(matches.contains("move forward") || matches.contains("forward")){
 
-
-                .performClick();
+            forwardButton.performClick();
 
         }
         else if(matches.contains("rotate left") || matches.contains("left")){
 
 
-            left.performClick();
+            rotateleft.performClick();
 
         }
         else if(matches.contains("rotate right") || matches.contains("right")){
