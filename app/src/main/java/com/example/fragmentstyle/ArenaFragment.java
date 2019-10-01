@@ -2,10 +2,12 @@ package com.example.fragmentstyle;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
@@ -78,6 +80,7 @@ public class ArenaFragment extends Fragment {
     Button gridWaypointBtn;
     Button imgBtn;
     Switch bluetoothStatusSwitch;
+    Button voiceControl;
 
     //  Dialog
     AlertDialog.Builder builder;
@@ -140,6 +143,10 @@ public class ArenaFragment extends Fragment {
         updateBtn.setOnClickListener(updateButtonClickListener);
         imgBtn = view.findViewById(R.id.showImg);
         imgBtn.setOnClickListener(imageBtnOnClickListener);
+
+
+        // Voice recognition
+        voiceControl = view.findViewById(R.id.voiceButton);
 
         //  Bluetooth Status
         bluetoothStatusSwitch = view.findViewById(R.id.bluetooth_status);
@@ -739,8 +746,31 @@ public class ArenaFragment extends Fragment {
     }
 
     /**
+     * Handle messages for voice
+     */
+
+    /**
      * Handle messages from BluetoothService
      */
+
+    private View.OnLongClickListener voiceBtnOnLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            startVoiceRecognitionActivity();
+            return false;
+        }
+    };
+
+    private void startVoiceRecognitionActivity() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        //uses free form text input
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        //Puts a customized message to the prompt
+
+        startActivityForResult(intent, 123);
+    }
+    
     private final Handler.Callback bluetoothServiceMessageHandler = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
