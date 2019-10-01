@@ -340,6 +340,8 @@ public class ArenaFragment extends Fragment {
                     String paddedP2 = contents[1].trim();
                     robotMidX = contents[3].trim();
                     robotMidY = contents[2].trim();
+                    //robotMidX = Integer.toString((Integer.parseInt(contents[3].trim())-1));
+                    //robotMidY = Integer.toString((Integer.parseInt(contents[2].trim())-1));
                     robotDir = contents[4].trim();
                     Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir);
 
@@ -379,6 +381,8 @@ public class ArenaFragment extends Fragment {
 
                     //  Get contents of message
                     contents = message.split(",");
+                    //robotMidX = Integer.toString((Integer.parseInt(contents[0].trim())-1));
+                    //robotMidY = Integer.toString((Integer.parseInt(contents[1].trim())-1));
                     robotMidX = contents[0].trim();
                     robotMidY = contents[1].trim();
                     robotDir = contents[2].trim().toLowerCase();
