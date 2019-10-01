@@ -77,6 +77,7 @@ public class ArenaFragment extends Fragment {
     Button gridRobotBtn;
     Button gridWaypointBtn;
     Button imgBtn;
+    Button clearBtn;
     Switch bluetoothStatusSwitch;
 
     //  Dialog
@@ -140,6 +141,8 @@ public class ArenaFragment extends Fragment {
         updateBtn.setOnClickListener(updateButtonClickListener);
         imgBtn = view.findViewById(R.id.showImg);
         imgBtn.setOnClickListener(imageBtnOnClickListener);
+        clearBtn = view.findViewById(R.id.clearMap);
+        clearBtn.setOnClickListener(clearBtnListener);
 
         //  Bluetooth Status
         bluetoothStatusSwitch = view.findViewById(R.id.bluetooth_status);
@@ -210,6 +213,7 @@ public class ArenaFragment extends Fragment {
         String savedP2Descriptor = Preferences.readPreference(getContext(), R.string.arena_p2_descriptor);
         String savedWaypoint = Preferences.readPreference(getContext(), R.string.arena_waypoint);
         Log.d(MY_TAG, "loadSavedArena: savedWaypoint: "+savedWaypoint);
+        Log.d(MY_TAG, "savedP1Descriptr: "+savedP1Descriptor);
 
         //  Load saved robot position and direction
         if (savedRobotPosition.trim().length() != 0) {
@@ -345,6 +349,7 @@ public class ArenaFragment extends Fragment {
 
                     //  Update map with P1 descriptor and save into SharedPreferences for future use
                     arenaView.updateMapP1(paddedP1);
+
                     Preferences.savePreference(getContext(), R.string.arena_p1_descriptor, paddedP1);
 
                     //  Update map with P2 descriptor and sae into SharedPreferences for future use
@@ -396,7 +401,7 @@ public class ArenaFragment extends Fragment {
             message = message.replace("/i","");
             Log.d(MY_TAG, "message: "+message);
             if (message.startsWith("m")){
-                Preferences.removeHashMap(getContext());
+                // Preferences.removeHashMap(getContext());
                 //Since its first point, remove previous saved points
                 message = message.replace("m","");
                 Log.d(MY_TAG, "replace message: "+message);
@@ -513,7 +518,6 @@ public class ArenaFragment extends Fragment {
             temp = Preferences.getHashMap(getContext(),IMAGE_KEY);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
             String mymessage="";
-            Log.d(MY_TAG,"Number of key-value pairs: " + temp.size());
             if (temp != null){
                 Iterator it = temp.entrySet().iterator();
                 while (it.hasNext()){
@@ -526,7 +530,6 @@ public class ArenaFragment extends Fragment {
                     myInt = (Integer) entry.getKey();
                     Log.d(MY_TAG, "Image ID: " + myInt);
                     mymessage += "("+ tempPoint.x +"," + tempPoint.y +"): Image ID" + myInt +"\n";
-                    arenaView.setImageOnMap(tempPoint.x, tempPoint.y);
                 }
 
             }
@@ -545,11 +548,17 @@ public class ArenaFragment extends Fragment {
                     });
             AlertDialog alert11 = builder1.create();
             alert11.show();
+            Log.d(MY_TAG, "mymessage: "+mymessage);
+            String[] all_images = mymessage.split("\n");
+            for(int i = 0; i<all_images.length; i++){
+                String id = all_images[i];
+            }
         }
     };
     public void setWaypoint(int x, int y) {
         arenaView.setWaypoint(x, y);
     }
+
 
     private View.OnClickListener exploreButtonOnClickListener = new View.OnClickListener() {
         @Override
@@ -572,6 +581,8 @@ public class ArenaFragment extends Fragment {
                         if (bs.getState() == BluetoothService.State.CONNECTED) {
                             //  Clear Arena
                             arenaView.clearArena();
+                            // Clear HashMap
+                            // Preferences.removeHashMap(getContext());
                             //  Place robot at default position
                             int[] robotLoc = arenaView.getRobotLoc();
                             arenaView.moveRobot(robotLoc[0], robotLoc[1], robotLoc[2]);
@@ -601,6 +612,16 @@ public class ArenaFragment extends Fragment {
             } else {
                 Toast.makeText(getContext(), "Waypoint is not placed", Toast.LENGTH_LONG).show();
             }
+        }
+    };
+
+    private View.OnClickListener clearBtnListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            arenaView.clearArena();
+            Preferences.savePreference(getContext(), R.string.arena_robot_position, "");
+            Preferences.savePreference(getContext(), R.string.arena_p1_descriptor, "");
+            Preferences.savePreference(getContext(), R.string.arena_p2_descriptor, "");
         }
     };
 

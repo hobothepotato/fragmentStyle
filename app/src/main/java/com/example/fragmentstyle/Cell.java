@@ -91,7 +91,7 @@ class Cell {
         // Image ID and color set
         switch (type4){
             case IMAGE:
-                paint.setColor(Color.rgb(0, 0,255));
+                paint.setColor(Color.rgb(128, 20,80));
         }
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRect(cellRect, paint);

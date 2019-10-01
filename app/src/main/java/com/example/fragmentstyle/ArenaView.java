@@ -34,7 +34,7 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
     int MAX_HEIGHT;
     int MIN_WIDTH = 0;
     int MAX_WIDTH;
-    int imageX, imageY;
+    int imageX = 50, imageY = 50; // Set image out of range so that it doesnt place anything on the map.
 
     //  Robot
     private static Robot robot;
@@ -65,7 +65,7 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
     //  Arena objects
     private StringBuilder sb;
 
-    private int robotX = 1, robotY = 1, robotRotation = 270;
+    private int robotX = 1, robotY = 1, robotRotation = 0;
 
     public ArenaView(Context context) {
         super(context);
@@ -471,7 +471,8 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
         //  Iterate through Arena and update accordingly
         for (int i = ARENA_ROW_COUNT - 1; i > -1; i--) {
             for (int j = 0; j < ARENA_COLUMN_COUNT; j++) {
-                if(i == imageX && j == imageY){
+                if(i == 19 - imageY && j == imageX){
+                    Log.d(MY_TAG, "updateMapP2: Setting IMAGE Color to map");
                     cells[i][j].setType4(IMAGE);
                 }
                 if (cells[i][j].getType() == Cell.Type.EXPLORED) {
@@ -564,6 +565,7 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
             for (int j = 0; j < ARENA_COLUMN_COUNT; j++) {
                 cells[i][j].setType(Cell.Type.UNEXPLORED);
                 cells[i][j].setType2(Cell.Type2.EMPTY);
+                cells[i][j].setType4(Cell.Type4.EMPTY);
             }
         }
     }
