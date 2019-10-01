@@ -400,7 +400,10 @@ public class ArenaFragment extends Fragment {
                     String paddedP1 = contents[0].trim();
                     String paddedP2 = contents[1].trim();
                     robotMidX = contents[3].trim();
+                    // TODO: Might need to change according to checks
                     robotMidY = contents[2].trim();
+                    int intRobotMidX = Integer.parseInt(robotMidX) - 1;
+                    robotMidX = String.valueOf(intRobotMidX);
                     //robotMidX = Integer.toString((Integer.parseInt(contents[3].trim())-1));
                     //robotMidY = Integer.toString((Integer.parseInt(contents[2].trim())-1));
                     robotDir = contents[4].trim();
@@ -574,45 +577,59 @@ public class ArenaFragment extends Fragment {
 
     private View.OnClickListener imageBtnOnClickListener = new View.OnClickListener(){
         @Override
-        public void onClick(View v){
-            Map temp;
-            temp = Preferences.getHashMap(getContext(),IMAGE_KEY);
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-            String mymessage="";
-            if (temp != null){
-                Iterator it = temp.entrySet().iterator();
-                while (it.hasNext()){
-                    Point tempPoint;
-                    int myInt;
-                    Map.Entry entry = (Map.Entry) it.next();
-                    tempPoint = (Point) entry.getValue();
-                    Log.d(MY_TAG, "value type:" +tempPoint.getClass());
-                    //Log.d(MY_TAG, "point received" + tempPoint.x + ","+ tempPoint.y);
-                    myInt = (Integer) entry.getKey();
-                    Log.d(MY_TAG, "Image ID: " + myInt);
-                    mymessage += "("+ tempPoint.x +"," + tempPoint.y +"): Image ID" + myInt +"\n";
+        public void onClick(View v) {
+            if (state == State.EXPLORING) {
+                Map temp;
+                temp = Preferences.getHashMap(getContext(), IMAGE_KEY);
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                String mymessage = "";
+                if (temp != null) {
+                    Iterator it = temp.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Point tempPoint;
+                        int myInt;
+                        Map.Entry entry = (Map.Entry) it.next();
+                        tempPoint = (Point) entry.getValue();
+                        Log.d(MY_TAG, "value type:" + tempPoint.getClass());
+                        //Log.d(MY_TAG, "point received" + tempPoint.x + ","+ tempPoint.y);
+                        myInt = (Integer) entry.getKey();
+                        Log.d(MY_TAG, "Image ID: " + myInt);
+                        mymessage += "(" + tempPoint.x + "," + tempPoint.y + "): Image ID" + myInt + "\n";
+                    }
+
+                } else {
+                    mymessage = "EMPTY HASHMAP";
                 }
+                builder1.setMessage(mymessage);
+                builder1.setCancelable(true);
 
-            }
-            else{
-                mymessage= "EMPTY HASHMAP";
-            }
-            builder1.setMessage(mymessage);
-            builder1.setCancelable(true);
-
-            builder1.setPositiveButton(
-                    "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
-            Log.d(MY_TAG, "mymessage: "+mymessage);
-            String[] all_images = mymessage.split("\n");
-            for(int i = 0; i<all_images.length; i++){
-                String id = all_images[i];
+                builder1.setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+                Log.d(MY_TAG, "mymessage: " + mymessage);
+                if (mymessage != "EMPTY HASHMAP") {
+                    String[] all_images = mymessage.split("\n");
+                    for (int i = 0; i < all_images.length; i++) {
+                        String id = all_images[i].split(":")[1].replace("Image ID", "");
+                        Log.d(MY_TAG, "ID: " + id);
+                        String coord = all_images[i].split(":")[0];
+                        String appended_coord = coord.substring(1, coord.length() - 1);
+                        Log.d(MY_TAG, "coord: " + appended_coord);
+                        int xcoord = Integer.parseInt(appended_coord.split(",")[0]);
+                        int ycoord = Integer.parseInt(appended_coord.split(",")[1]);
+                        Log.d(MY_TAG, "IMAGE BTN LISTENER xcoord: " + String.valueOf(xcoord) + ", ycoord: " + String.valueOf(ycoord));
+                        arenaView.setImageOnMap(xcoord, ycoord);
+                        loadSavedArena();
+                    }
+                }
+            }else{
+                Toast.makeText(getContext(), "Only able to access after exploration", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -643,7 +660,7 @@ public class ArenaFragment extends Fragment {
                             //  Clear Arena
                             arenaView.clearArena();
                             // Clear HashMap
-                            // Preferences.removeHashMap(getContext());
+                             Preferences.removeHashMap(getContext());
                             //  Place robot at default position
                             int[] robotLoc = arenaView.getRobotLoc();
                             arenaView.moveRobot(robotLoc[0], robotLoc[1], robotLoc[2]);
@@ -683,6 +700,7 @@ public class ArenaFragment extends Fragment {
             Preferences.savePreference(getContext(), R.string.arena_robot_position, "");
             Preferences.savePreference(getContext(), R.string.arena_p1_descriptor, "");
             Preferences.savePreference(getContext(), R.string.arena_p2_descriptor, "");
+            Preferences.removeHashMap(getContext());
         }
     };
 
