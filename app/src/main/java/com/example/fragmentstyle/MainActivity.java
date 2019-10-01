@@ -217,21 +217,27 @@ public class MainActivity extends AppCompatActivity implements ReconfigureDialog
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d(TAG, "onActivityResult: entered");
+        Log.d(TAG, "Request Code: "+ requestCode + " resultCode: "+ resultCode);
         //  If user does not turn on Bluetooth, prompt user to turn on Bluetooth
         if (resultCode == RESULT_CANCELED) {
+            Log.d(TAG, "onActivityResult: result cancelled");
             Toast.makeText(getApplicationContext(), "Bluetooth must be enabled to continue", Toast.LENGTH_SHORT).show();
             onBluetooth();
         }
-        else if (resultCode == 123 && resultCode == RESULT_OK){
+        else if (requestCode == 123 && resultCode == RESULT_OK){
             // Fill the list view with the strings the recognizer thought it could have heard
+            Log.d("VOICE", "onActivityResult: received results");
+            ArenaFragment myArena = (ArenaFragment) fm.findFragmentByTag(ARENA_TAG);
             ArrayList<String> matches = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
-            ArenaFragment.returnSpeech(matches);
+            myArena.returnSpeech(matches);
         }
         else {
+            Log.d(TAG, "onActivityResult: disconnecting BT");
             bluetoothService.disconnect();
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

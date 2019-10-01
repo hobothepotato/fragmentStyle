@@ -59,6 +59,7 @@ public class ArenaFragment extends Fragment {
     private static ArrayList<String> matches;
     private final String TAG = "ARENA_FRAG:";
     private String MY_TAG = " Shawn_Log: ArenaFragment: ";
+    private String VOICE = "VOICE_TEST: ";
     private static Map<Integer, Point> storeImage = new HashMap<>();
 
     //  Bluetooth Service
@@ -214,17 +215,20 @@ public class ArenaFragment extends Fragment {
         bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_START + ":" + (position.x / width) + "," + (ARENA_ROW_COUNT - (position.y / height)) + "," + (long) rotation);
     }
     public void returnSpeech(ArrayList<String> matches){
+        Log.d(VOICE, "returnSpeech: voice returned");
         ArenaFragment.matches = matches;
 //        if(matches.contains("start exploration") || matches.contains("explore")){
 //
 //        }
         if(matches.contains("move forward") || matches.contains("forward")){
+            Toast.makeText(getContext(),"VOICE FORWARD", Toast.LENGTH_SHORT).show();
             if (bs.getState() == BluetoothService.State.CONNECTED) {
                 arenaView.setArenaAction(ARENA_NONE);
                 bs.sendMessageToRemoteDevice(ROBOT_COMMAND_FORWARD);
             }
         }
         else if(matches.contains("rotate left") || matches.contains("left")){
+            Toast.makeText(getContext(),"VOICE LEFT", Toast.LENGTH_SHORT).show();
             if (bs.getState() == BluetoothService.State.CONNECTED) {
                 arenaView.setArenaAction(ARENA_NONE);
                 bs.sendMessageToRemoteDevice(ROBOT_COMMAND_ROTATE_LEFT);
@@ -232,6 +236,7 @@ public class ArenaFragment extends Fragment {
 
         }
         else if(matches.contains("rotate right") || matches.contains("right")){
+            Toast.makeText(getContext(),"VOICE RIGHT", Toast.LENGTH_SHORT).show();
             if (bs.getState() == BluetoothService.State.CONNECTED) {
                 arenaView.setArenaAction(ARENA_NONE);
                 bs.sendMessageToRemoteDevice(ROBOT_COMMAND_ROTATE_RIGHT);
@@ -843,6 +848,7 @@ public class ArenaFragment extends Fragment {
     private View.OnLongClickListener voiceBtnOnLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
+            Log.d(VOICE, "onLongClick: voice started");
             startVoiceRecognitionActivity();
             return false;
         }
@@ -855,7 +861,8 @@ public class ArenaFragment extends Fragment {
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         //Puts a customized message to the prompt
 
-        startActivityForResult(intent, 123);
+        getActivity().startActivityForResult(intent, 123);
+        Log.d(VOICE, "startVoiceRecognitionActivity: setting intent to voice");
     }
 
     /**
