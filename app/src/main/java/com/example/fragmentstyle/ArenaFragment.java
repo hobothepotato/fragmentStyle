@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Point;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -150,6 +151,7 @@ public class ArenaFragment extends Fragment {
 
         // Voice recognition
         voiceControl = view.findViewById(R.id.voiceButton);
+        voiceControl.setOnLongClickListener(voiceBtnOnLongClickListener);
 
         //  Bluetooth Status
         bluetoothStatusSwitch = view.findViewById(R.id.bluetooth_status);
@@ -788,9 +790,7 @@ public class ArenaFragment extends Fragment {
      * Handle messages for voice
      */
 
-    /**
-     * Handle messages from BluetoothService
-     */
+
 
     private View.OnLongClickListener voiceBtnOnLongClickListener = new View.OnLongClickListener() {
         @Override
@@ -809,7 +809,10 @@ public class ArenaFragment extends Fragment {
 
         startActivityForResult(intent, 123);
     }
-    
+
+    /**
+     * Handle messages from BluetoothService
+     */
     private final Handler.Callback bluetoothServiceMessageHandler = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -859,4 +862,50 @@ public class ArenaFragment extends Fragment {
             return false;
         }
     };
+    public static void returnSpeech(ArrayList<String> matches){
+//        if(matches.contains("start exploration") || matches.contains("explore")){
+//
+//        }
+        if(matches.contains("move forward") || matches.contains("forward")){
+
+
+            forwardButton.performClick();
+
+        }
+        else if(matches.contains("rotate left") || matches.contains("left")){
+
+
+            rotateleft.performClick();
+
+        }
+        else if(matches.contains("rotate right") || matches.contains("right")){
+
+            right.performClick();
+
+        }
+        else if(matches.contains("move back") || matches.contains("back") || matches.contains("reverse")){
+
+            down.performClick();
+
+        }
+        for(int i = 0;i<20;i++){
+            if(matches.contains("move forward "+i+" times") || matches.contains("forward "+i+" times")){
+                for(int j=i;j>0;j--){
+                    up.performClick();
+                }
+            }else if(matches.contains("move back "+i+" times") || matches.contains("back "+i+" times") || matches.contains("reverse "+i+" times")){
+                for(int j=i;j>0;j--){
+                    down.performClick();
+                }
+            }else if(matches.contains("rotate right "+i+" times") || matches.contains("right "+i+" times")){
+                for(int j=i;j>0;j--){
+                    right.performClick();
+                }
+            }else if(matches.contains("rotate left "+i+" times") || matches.contains("left "+i+" times")){
+                for(int j=i;j>0;j--){
+                    left.performClick();
+                }
+            }
+        }
+    }
 }
