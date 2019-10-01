@@ -34,6 +34,7 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
     int MAX_HEIGHT;
     int MIN_WIDTH = 0;
     int MAX_WIDTH;
+    int imageX, imageY;
 
     //  Robot
     private static Robot robot;
@@ -470,9 +471,9 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
         //  Iterate through Arena and update accordingly
         for (int i = ARENA_ROW_COUNT - 1; i > -1; i--) {
             for (int j = 0; j < ARENA_COLUMN_COUNT; j++) {
-//                if(i == imageXVal && j == imageYVal){
-//                    cells[i][j].setType4(IMAGE);
-//                }
+                if(i == imageX && j == imageY){
+                    cells[i][j].setType4(IMAGE);
+                }
                 if (cells[i][j].getType() == Cell.Type.EXPLORED) {
                     //  Get each binary digit
                     character = String.valueOf(sb.charAt(k));
@@ -486,6 +487,11 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
+    }
+
+    public void setImageOnMap(int x, int y){
+        imageX = x;
+        imageY = y;
     }
 
     /**

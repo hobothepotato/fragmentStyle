@@ -390,13 +390,12 @@ public class ArenaFragment extends Fragment {
         }
         //Messages dealing with Image recognition id
         else if(message.startsWith("/i")){
-            Log.d(MY_TAG, "Message dealing with image reocognition");
+            Log.d(MY_TAG, "Message dealing with image recognition");
             int imageXcoord, imageYcoord,imageID;
             //TODO implement image labling here
             message = message.replace("/i","");
             Log.d(MY_TAG, "message: "+message);
             if (message.startsWith("m")){
-                Log.d(MY_TAG, "HERE I AM");
                 Preferences.removeHashMap(getContext());
                 //Since its first point, remove previous saved points
                 message = message.replace("m","");
@@ -527,6 +526,7 @@ public class ArenaFragment extends Fragment {
                     myInt = (Integer) entry.getKey();
                     Log.d(MY_TAG, "Image ID: " + myInt);
                     mymessage += "("+ tempPoint.x +"," + tempPoint.y +"): Image ID" + myInt +"\n";
+                    arenaView.setImageOnMap(tempPoint.x, tempPoint.y);
                 }
 
             }
