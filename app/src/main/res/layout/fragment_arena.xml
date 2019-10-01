@@ -107,7 +107,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/arena_controls_left">
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/voiceButton"
+                android:text="voice"
+                android:layout_above="@+id/arena_robot_status"
+                android:layout_centerHorizontal="true"/>
             <TextView
                 android:id="@+id/arena_robot_status"
                 android:layout_width="wrap_content"

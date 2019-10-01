@@ -2,10 +2,12 @@ package com.example.fragmentstyle;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
@@ -79,6 +81,7 @@ public class ArenaFragment extends Fragment {
     Button imgBtn;
     Button clearBtn;
     Switch bluetoothStatusSwitch;
+    Button voiceControl;
 
     //  Dialog
     AlertDialog.Builder builder;
@@ -143,6 +146,10 @@ public class ArenaFragment extends Fragment {
         imgBtn.setOnClickListener(imageBtnOnClickListener);
         clearBtn = view.findViewById(R.id.clearMap);
         clearBtn.setOnClickListener(clearBtnListener);
+
+
+        // Voice recognition
+        voiceControl = view.findViewById(R.id.voiceButton);
 
         //  Bluetooth Status
         bluetoothStatusSwitch = view.findViewById(R.id.bluetooth_status);
@@ -344,6 +351,8 @@ public class ArenaFragment extends Fragment {
                     String paddedP2 = contents[1].trim();
                     robotMidX = contents[3].trim();
                     robotMidY = contents[2].trim();
+                    //robotMidX = Integer.toString((Integer.parseInt(contents[3].trim())-1));
+                    //robotMidY = Integer.toString((Integer.parseInt(contents[2].trim())-1));
                     robotDir = contents[4].trim();
                     Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir);
 
@@ -384,6 +393,8 @@ public class ArenaFragment extends Fragment {
 
                     //  Get contents of message
                     contents = message.split(",");
+                    //robotMidX = Integer.toString((Integer.parseInt(contents[0].trim())-1));
+                    //robotMidY = Integer.toString((Integer.parseInt(contents[1].trim())-1));
                     robotMidX = contents[0].trim();
                     robotMidY = contents[1].trim();
                     robotDir = contents[2].trim().toLowerCase();
@@ -756,8 +767,31 @@ public class ArenaFragment extends Fragment {
     }
 
     /**
+     * Handle messages for voice
+     */
+
+    /**
      * Handle messages from BluetoothService
      */
+
+    private View.OnLongClickListener voiceBtnOnLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            startVoiceRecognitionActivity();
+            return false;
+        }
+    };
+
+    private void startVoiceRecognitionActivity() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        //uses free form text input
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        //Puts a customized message to the prompt
+
+        startActivityForResult(intent, 123);
+    }
+    
     private final Handler.Callback bluetoothServiceMessageHandler = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
