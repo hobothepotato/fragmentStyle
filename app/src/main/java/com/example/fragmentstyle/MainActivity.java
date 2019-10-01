@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,8 @@ import com.example.fragmentstyle.BluetoothFragment;
 import com.example.fragmentstyle.BluetoothService;
 import com.example.fragmentstyle.CustomCommandsFragment;
 import com.example.fragmentstyle.ReconfigureDialogFragment;
+
+import java.util.ArrayList;
 
 import static android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED;
 
@@ -220,7 +223,14 @@ public class MainActivity extends AppCompatActivity implements ReconfigureDialog
         if (resultCode == RESULT_CANCELED) {
             Toast.makeText(getApplicationContext(), "Bluetooth must be enabled to continue", Toast.LENGTH_SHORT).show();
             onBluetooth();
-        } else {
+        }
+        else if (resultCode == 123 && resultCode == RESULT_OK){
+            // Fill the list view with the strings the recognizer thought it could have heard
+            ArrayList<String> matches = data.getStringArrayListExtra(
+                    RecognizerIntent.EXTRA_RESULTS);
+            ArenaFragment.returnSpeech(matches);
+        }
+        else {
             bluetoothService.disconnect();
         }
     }
