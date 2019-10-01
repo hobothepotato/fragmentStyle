@@ -88,5 +88,6 @@ public class Preferences {
         sp = c.getSharedPreferences(CUSTOM_COMMANDS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(IMAGE_KEY);
+        editor.apply();
     }
 }
