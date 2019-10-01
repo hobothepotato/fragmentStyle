@@ -56,6 +56,7 @@ import static com.example.fragmentstyle.Constants.myMap;
 
 public class ArenaFragment extends Fragment {
 
+    private static ArrayList<String> matches;
     private final String TAG = "ARENA_FRAG:";
     private String MY_TAG = " Shawn_Log: ArenaFragment: ";
     private static Map<Integer, Point> storeImage = new HashMap<>();
@@ -211,6 +212,53 @@ public class ArenaFragment extends Fragment {
      */
     public void sendStartingPosition(Point position, int width, int height, float rotation) {
         bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_START + ":" + (position.x / width) + "," + (ARENA_ROW_COUNT - (position.y / height)) + "," + (long) rotation);
+    }
+    public void returnSpeech(ArrayList<String> matches){
+        ArenaFragment.matches = matches;
+//        if(matches.contains("start exploration") || matches.contains("explore")){
+//
+//        }
+        if(matches.contains("move forward") || matches.contains("forward")){
+            if (bs.getState() == BluetoothService.State.CONNECTED) {
+                arenaView.setArenaAction(ARENA_NONE);
+                bs.sendMessageToRemoteDevice(ROBOT_COMMAND_FORWARD);
+            }
+        }
+        else if(matches.contains("rotate left") || matches.contains("left")){
+            if (bs.getState() == BluetoothService.State.CONNECTED) {
+                arenaView.setArenaAction(ARENA_NONE);
+                bs.sendMessageToRemoteDevice(ROBOT_COMMAND_ROTATE_LEFT);
+            }
+
+        }
+        else if(matches.contains("rotate right") || matches.contains("right")){
+            if (bs.getState() == BluetoothService.State.CONNECTED) {
+                arenaView.setArenaAction(ARENA_NONE);
+                bs.sendMessageToRemoteDevice(ROBOT_COMMAND_ROTATE_RIGHT);
+            }
+
+        }
+//
+//
+//        for(int i = 0;i<20;i++){
+//            if(matches.contains("move forward "+i+" times") || matches.contains("forward "+i+" times")){
+//                for(int j=i;j>0;j--){
+//                    up.performClick();
+//                }
+//            }else if(matches.contains("move back "+i+" times") || matches.contains("back "+i+" times") || matches.contains("reverse "+i+" times")){
+//                for(int j=i;j>0;j--){
+//                    down.performClick();
+//                }
+//            }else if(matches.contains("rotate right "+i+" times") || matches.contains("right "+i+" times")){
+//                for(int j=i;j>0;j--){
+//                    right.performClick();
+//                }
+//            }else if(matches.contains("rotate left "+i+" times") || matches.contains("left "+i+" times")){
+//                for(int j=i;j>0;j--){
+//                    left.performClick();
+//                }
+//            }
+//        }
     }
 
     /**
@@ -844,50 +892,52 @@ public class ArenaFragment extends Fragment {
             return false;
         }
     };
-    public static void returnSpeech(ArrayList<String> matches){
-//        if(matches.contains("start exploration") || matches.contains("explore")){
+
+//    public static void returnSpeech(ArrayList<String> matches){
+//        ArenaFragment.matches = matches;
+////        if(matches.contains("start exploration") || matches.contains("explore")){
+////
+////        }
+//        if(matches.contains("move forward") || matches.contains("forward")){
+//
+//
+//            forwardButton.performClick();
 //
 //        }
-        if(matches.contains("move forward") || matches.contains("forward")){
-
-
-            forwardButton.performClick();
-
-        }
-        else if(matches.contains("rotate left") || matches.contains("left")){
-
-
-            rotateleft.performClick();
-
-        }
-        else if(matches.contains("rotate right") || matches.contains("right")){
-
-            right.performClick();
-
-        }
-        else if(matches.contains("move back") || matches.contains("back") || matches.contains("reverse")){
-
-            down.performClick();
-
-        }
-        for(int i = 0;i<20;i++){
-            if(matches.contains("move forward "+i+" times") || matches.contains("forward "+i+" times")){
-                for(int j=i;j>0;j--){
-                    up.performClick();
-                }
-            }else if(matches.contains("move back "+i+" times") || matches.contains("back "+i+" times") || matches.contains("reverse "+i+" times")){
-                for(int j=i;j>0;j--){
-                    down.performClick();
-                }
-            }else if(matches.contains("rotate right "+i+" times") || matches.contains("right "+i+" times")){
-                for(int j=i;j>0;j--){
-                    right.performClick();
-                }
-            }else if(matches.contains("rotate left "+i+" times") || matches.contains("left "+i+" times")){
-                for(int j=i;j>0;j--){
-                    left.performClick();
-                }
-            }
-        }
-    }
+//        else if(matches.contains("rotate left") || matches.contains("left")){
+//
+//
+//            rotateLeftButton.performClick();
+//
+//        }
+//        else if(matches.contains("rotate right") || matches.contains("right")){
+//
+//            right.performClick();
+//
+//        }
+//        else if(matches.contains("move back") || matches.contains("back") || matches.contains("reverse")){
+//
+//            down.performClick();
+//
+//        }
+//        for(int i = 0;i<20;i++){
+//            if(matches.contains("move forward "+i+" times") || matches.contains("forward "+i+" times")){
+//                for(int j=i;j>0;j--){
+//                    up.performClick();
+//                }
+//            }else if(matches.contains("move back "+i+" times") || matches.contains("back "+i+" times") || matches.contains("reverse "+i+" times")){
+//                for(int j=i;j>0;j--){
+//                    down.performClick();
+//                }
+//            }else if(matches.contains("rotate right "+i+" times") || matches.contains("right "+i+" times")){
+//                for(int j=i;j>0;j--){
+//                    right.performClick();
+//                }
+//            }else if(matches.contains("rotate left "+i+" times") || matches.contains("left "+i+" times")){
+//                for(int j=i;j>0;j--){
+//                    left.performClick();
+//                }
+//            }
+//        }
+//    }
 }
