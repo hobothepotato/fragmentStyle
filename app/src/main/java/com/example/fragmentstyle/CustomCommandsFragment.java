@@ -1,6 +1,8 @@
 package com.example.fragmentstyle;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +37,7 @@ public class CustomCommandsFragment extends Fragment {
     //  Layout members
     private Button customCommand1Button;
     private Button customCommand2Button;
+    private Button test;
 
     public CustomCommandsFragment() {
         // Required empty public constructor
@@ -51,6 +54,7 @@ public class CustomCommandsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_custom_commands, container, false);
 
         //  Get buttons
+        test = view.findViewById(R.id.test);
         customCommand1Button = view.findViewById(R.id.custom_command_1_button);
         customCommand2Button = view.findViewById(R.id.custom_command_2_button);
         Button customCommand1ReconfigureButton = view.findViewById(R.id.custom_command_1_reconfigure_button);
@@ -60,6 +64,24 @@ public class CustomCommandsFragment extends Fragment {
 
         //  Set button values
         setButtonValues();
+
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertadd = new AlertDialog.Builder(getContext());
+                LayoutInflater factory = LayoutInflater.from(getContext());
+                final View newview = factory.inflate(R.layout.sample, null);
+
+                alertadd.setView(newview);
+                alertadd.setNeutralButton("Here!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dlg, int sumthin) {
+                        dlg.cancel();
+                    }
+                });
+
+                alertadd.show();
+            }
+        });
 
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
