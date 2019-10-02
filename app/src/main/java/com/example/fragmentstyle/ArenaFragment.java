@@ -85,6 +85,9 @@ public class ArenaFragment extends Fragment {
     Button clearBtn;
     Switch bluetoothStatusSwitch;
     Button voiceControl;
+    ImageButton forwardButton;
+    ImageButton rotateLeftButton;
+    ImageButton rotateRightButton;
 
     //  Dialog
     AlertDialog.Builder builder;
@@ -115,10 +118,10 @@ public class ArenaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_arena, container, false);
 
         //  Robot Controls
-        ImageButton forwardButton = view.findViewById(R.id.robot_controls_forward);
+        forwardButton = view.findViewById(R.id.robot_controls_forward);
 //        ImageButton backwardButton = view.findViewById(R.id.robot_controls_backward);
-        ImageButton rotateLeftButton = view.findViewById(R.id.robot_controls_rotate_left);
-        ImageButton rotateRightButton = view.findViewById(R.id.robot_controls_rotate_right);
+        rotateLeftButton = view.findViewById(R.id.robot_controls_rotate_left);
+        rotateRightButton = view.findViewById(R.id.robot_controls_rotate_right);
 
         //  Robot Controls: OnClickListeners
         forwardButton.setOnClickListener(forwardButtonClickListener);
@@ -215,33 +218,24 @@ public class ArenaFragment extends Fragment {
         bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_START + ":" + (position.x / width) + "," + (ARENA_ROW_COUNT - (position.y / height)) + "," + (long) rotation);
     }
     public void returnSpeech(ArrayList<String> matches){
+
         Log.d(VOICE, "returnSpeech: voice returned");
         ArenaFragment.matches = matches;
-//        if(matches.contains("start exploration") || matches.contains("explore")){
-//
-//        }
-        if(matches.contains("move forward") || matches.contains("forward")){
+        if(matches.contains("start exploration") || matches.contains("explore")){
+            Toast.makeText(getContext(),"VOICE EXPLORE", Toast.LENGTH_SHORT).show();
+            exploreButton.performClick();
+        }
+        else if(matches.contains("move forward") || matches.contains("forward")){
             Toast.makeText(getContext(),"VOICE FORWARD", Toast.LENGTH_SHORT).show();
-            if (bs.getState() == BluetoothService.State.CONNECTED) {
-                arenaView.setArenaAction(ARENA_NONE);
-                bs.sendMessageToRemoteDevice(ROBOT_COMMAND_FORWARD);
-            }
+            forwardButton.performClick();
         }
         else if(matches.contains("rotate left") || matches.contains("left")){
             Toast.makeText(getContext(),"VOICE LEFT", Toast.LENGTH_SHORT).show();
-            if (bs.getState() == BluetoothService.State.CONNECTED) {
-                arenaView.setArenaAction(ARENA_NONE);
-                bs.sendMessageToRemoteDevice(ROBOT_COMMAND_ROTATE_LEFT);
-            }
-
+            rotateLeftButton.performClick();
         }
         else if(matches.contains("rotate right") || matches.contains("right")){
             Toast.makeText(getContext(),"VOICE RIGHT", Toast.LENGTH_SHORT).show();
-            if (bs.getState() == BluetoothService.State.CONNECTED) {
-                arenaView.setArenaAction(ARENA_NONE);
-                bs.sendMessageToRemoteDevice(ROBOT_COMMAND_ROTATE_RIGHT);
-            }
-
+            rotateRightButton.performClick();
         }
 //
 //
