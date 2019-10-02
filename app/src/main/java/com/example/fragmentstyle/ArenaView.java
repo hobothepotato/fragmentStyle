@@ -494,10 +494,43 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setImageOnMap(int y, int x, int id){
         Log.d("IMAGETEST", "setImageOnMap: x= "+x+" y= "+y);
-
+        Drawable img = getResources().getDrawable(R.drawable.imagearrowwhite);
         cells[19-x][y].setType4(IMAGE);
         cells[19-x][y].setImageId(id);
-        Drawable img = getResources().getDrawable(R.drawable.image3red);
+        switch (id){
+            case 1: img = getResources().getDrawable(R.drawable.imagearrowwhite);
+                break;
+            case 2: img = getResources().getDrawable(R.drawable.imagearrowred);
+                break;
+            case 3: img = getResources().getDrawable(R.drawable.imagearrowgreen);
+                break;
+            case 4: img = getResources().getDrawable(R.drawable.imagearrowblue);
+                break;
+            case 5: img = getResources().getDrawable(R.drawable.imagecircleyellow);
+                break;
+            case 6: img = getResources().getDrawable(R.drawable.image1blue);
+                break;
+            case 7: img = getResources().getDrawable(R.drawable.image2green);
+                break;
+            case 8: img = getResources().getDrawable(R.drawable.image3red);
+                break;
+            case 9: img = getResources().getDrawable(R.drawable.image4white);
+                break;
+            case 10: img = getResources().getDrawable(R.drawable.image5yellow);
+                break;
+            case 11: img = getResources().getDrawable(R.drawable.imageared);
+                break;
+            case 12: img = getResources().getDrawable(R.drawable.imagebgreen);
+                break;
+            case 13: img = getResources().getDrawable(R.drawable.imagecwhite);
+                break;
+            case 14: img = getResources().getDrawable(R.drawable.imagedblue);
+                break;
+            case 15: img = getResources().getDrawable(R.drawable.imageeyellow);
+                break;
+            default: break;
+
+        }
         cells[19-x][y].setMyImg(img);
         Log.d("IMAGETEST", "setImageOnMap: pt2");
     }
