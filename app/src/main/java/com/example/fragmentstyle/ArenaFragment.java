@@ -614,16 +614,22 @@ public class ArenaFragment extends Fragment {
                 Log.d(MY_TAG, "mymessage: " + mymessage);
                 if (mymessage != "EMPTY HASHMAP") {
                     String[] all_images = mymessage.split("\n");
+                    Log.d(TAG, "onClick: image111");
                     for (int i = 0; i < all_images.length; i++) {
+                        Log.d(TAG, "onClick: image inside for loopmd");
+                        ///crashing heremd
                         String id = all_images[i].split(":")[1].replace("Image ID", "");
                         Log.d(MY_TAG, "ID: " + id);
+                        Integer temp1 = Integer.parseInt(id.replace(" ",""));
+                        Log.d(MY_TAG, "onClick: temp1=" +temp1);
                         String coord = all_images[i].split(":")[0];
                         String appended_coord = coord.substring(1, coord.length() - 1);
                         Log.d(MY_TAG, "coord: " + appended_coord);
                         int xcoord = Integer.parseInt(appended_coord.split(",")[0]);
                         int ycoord = Integer.parseInt(appended_coord.split(",")[1]);
                         Log.d(MY_TAG, "IMAGE BTN LISTENER xcoord: " + String.valueOf(xcoord) + ", ycoord: " + String.valueOf(ycoord));
-                        arenaView.setImageOnMap(xcoord, ycoord);
+                        arenaView.setImageOnMap(xcoord, ycoord,temp1);
+                        Log.d(TAG, "onClick: imageset");
                         loadSavedArena();
                     }
                 }

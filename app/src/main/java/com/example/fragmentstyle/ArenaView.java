@@ -3,6 +3,7 @@ package com.example.fragmentstyle;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -34,7 +35,8 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
     int MAX_HEIGHT;
     int MIN_WIDTH = 0;
     int MAX_WIDTH;
-    int imageX = 50, imageY = 50; // Set image out of range so that it doesnt place anything on the map.
+    int imageX = 50, imageY = 50;
+    int imageID =-1;// Set image out of range so that it doesnt place anything on the map.
 
     //  Robot
     private static Robot robot;
@@ -490,9 +492,14 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void setImageOnMap(int x, int y){
-        imageX = x;
-        imageY = y;
+    public void setImageOnMap(int y, int x, int id){
+        Log.d("IMAGETEST", "setImageOnMap: x= "+x+" y= "+y);
+
+        cells[19-x][y].setType4(IMAGE);
+        cells[19-x][y].setImageId(id);
+        Drawable img = getResources().getDrawable(R.drawable.image3red);
+        cells[19-x][y].setMyImg(img);
+        Log.d("IMAGETEST", "setImageOnMap: pt2");
     }
 
     /**

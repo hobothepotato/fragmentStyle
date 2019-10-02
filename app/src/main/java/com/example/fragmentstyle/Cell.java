@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 class Cell {
 
@@ -18,6 +20,16 @@ class Cell {
     private int width;
     private int row;
     private int col;
+
+    public void setMyImg(Drawable myImg) {
+        this.myImg = myImg;
+    }
+
+    private Drawable myImg;
+
+
+
+    private int imageId;
 
     //  Part 1 Map Descriptor types
     enum Type {
@@ -51,6 +63,7 @@ class Cell {
         this.width = width;
         this.row = rowIndex;
         this.col = colIndex;
+        this.imageId = -1;
     }
 
     boolean isClicked(float x, float y) {
@@ -88,13 +101,19 @@ class Cell {
                 paint.setColor(Color.rgb(255, 193, 71));
                 break;
         }
+
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(cellRect, paint);
         // Image ID and color set
         switch (type4){
             case IMAGE:
+                Log.d("IMAGETEST", "draw: enter case");
                 paint.setColor(Color.rgb(128, 20,80));
+                myImg.setBounds(cellRect);
+                myImg.draw(canvas);
         }
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(cellRect, paint);
+//        paint.setStyle(Paint.Style.FILL);
+//        canvas.drawRect(cellRect, paint);
 
         //  Color destination
         if (row == 0 || row == 1 || row == 2) {
@@ -150,4 +169,16 @@ class Cell {
     int getColumnIndex(){
         return col;
     }
+
+    public void setImageId(int imageId) {
+        Log.d("IMAGETEST", "setImageId: imageid set to "+ imageId);
+        this.imageId = imageId;
+    }
+
+//    void drawImg(Canvas canvas, int id){
+//        Paint mypaint = this.paint;
+//        mypaint.setAntiAlias(true);
+//        mypaint.setFilterBitmap(true);
+//        mypaint.setDither(true);
+//    }
 }
