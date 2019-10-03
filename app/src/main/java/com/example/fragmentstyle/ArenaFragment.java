@@ -343,6 +343,8 @@ public class ArenaFragment extends Fragment {
         String robotMidY = "";
         String robotDir = "";
         Pattern pattern;
+        Pattern pattern2;
+        Matcher matcher2;
         Matcher matcher;
         String[] contents;
         Log.d(MY_TAG, "process Message: state: "+state);
@@ -381,8 +383,10 @@ public class ArenaFragment extends Fragment {
                 //  Regex expression to match correct messages
                 // (?:(?:north|south)(?:[ ](?:east|west))?|east|west)
                 pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,[0-9]+", Pattern.CASE_INSENSITIVE);
+                pattern2 = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,[0-9]+,[A-Z_]+", Pattern.CASE_INSENSITIVE);
                 //  Matcher that performs matching of regex to message
                 matcher = pattern.matcher(message);
+                matcher2 = pattern2.matcher(message);
                 /*
                 *   If the correct message is found at the start of the message,
                 *   return the correct message and perform processing,
@@ -392,6 +396,33 @@ public class ArenaFragment extends Fragment {
                 *   is lost. A single buffer is likely to only concatenate
                 *   two to three steps, and is an acceptable loss.
                 * */
+                while(matcher2.find()){
+                    message = matcher2.group();
+                    //  Get contents of message
+                    contents = message.split(",");
+                    String paddedP1 = contents[0].trim();
+                    String paddedP2 = contents[1].trim();
+                    robotMidX = contents[3].trim();
+                    robotMidY = contents[2].trim();
+                    int intRobotMidX = Integer.parseInt(robotMidX) - 1;
+                    robotMidX = String.valueOf(intRobotMidX);
+                    robotDir = contents[4].trim();
+                    String robStatus = contents[5].trim();
+                    Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir+", robot Status: "+robStatus);
+                    if(robStatus.contains("MOVE")) setStatus(STATUS.MOVEMENT, robStatus);
+                    else if(robStatus.contains("CALIB")) setStatus(STATUS.CALIBRATING, robStatus);
+                    //  Update map with P1 descriptor and save into SharedPreferences for future use
+                    arenaView.updateMapP1(paddedP1);
+
+                    Preferences.savePreference(getContext(), R.string.arena_p1_descriptor, paddedP1);
+
+                    //  Update map with P2 descriptor and sae into SharedPreferences for future use
+                    arenaView.updateMapP2(paddedP2);
+                    Preferences.savePreference(getContext(), R.string.arena_p2_descriptor, paddedP2);
+
+                    //  Move robot
+                    moveRobot(robotMidX, robotMidY, robotDir);
+                }
                 while(matcher.find()) {
                     message = matcher.group();
                     //  Get contents of message
@@ -672,7 +703,7 @@ public class ArenaFragment extends Fragment {
                             //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             //  Send way point coordinates
 //                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
-                             bs.sendMessageToRemoteDevice(waypointMsg);
+                             bs.sendMessageToRemoteDevice("A"+waypointMsg);
                             //  Save way point coordinates
                             Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
                             //  Send explore keyword
