@@ -453,34 +453,33 @@ public class ArenaFragment extends Fragment {
                 }
             } else if (state == State.FASTEST) {
                 Log.d(MY_TAG, "Process Message (FASTEST) message: "+message);
-                /**
-                 * Messages arriving have to be deconstructed and processed accordingly
-                 *  Messages come in the following format:
-                 *      x, y, Direction (i.e. NORTH, SOUTH, EAST, WEST)
-                 *  Example:
-                 *      1,1,NORTH
-                 */
+
                 //  Regex expression to match correct messages
-                pattern = Pattern.compile("[0-9]+,[0-9]+,(?:(?:north|south)(?:[ ](?:east|west))?|east|west)", Pattern.CASE_INSENSITIVE);
+                pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,[0-9]+", Pattern.CASE_INSENSITIVE);
                 //  Matcher that performs matching of regex to message
                 matcher = pattern.matcher(message);
                 /*
-                *   If correct messages are found, perform processing for each message.
-                *
-                *   Here, we perform a more diligent search for correct messages as
-                *   more information can be lost due to a smaller message size, if
-                *   we were to drop all messages that did not arrive first.
-                * */
+                 *   If correct messages are found, perform processing for each message.
+                 *
+                 *   Here, we perform a more diligent search for correct messages as
+                 *   more information can be lost due to a smaller message size, if
+                 *   we were to drop all messages that did not arrive first.
+                 * */
                 while (matcher.find()) {
                     message = matcher.group();
-
                     //  Get contents of message
                     contents = message.split(",");
-                    //robotMidX = Integer.toString((Integer.parseInt(contents[0].trim())-1));
-                    //robotMidY = Integer.toString((Integer.parseInt(contents[1].trim())-1));
-                    robotMidX = contents[0].trim();
-                    robotMidY = contents[1].trim();
-                    robotDir = contents[2].trim().toLowerCase();
+                    String paddedP1 = contents[0].trim();
+                    String paddedP2 = contents[1].trim();
+                    robotMidX = contents[3].trim();
+                    // TODO: Might need to change according to checks
+                    robotMidY = contents[2].trim();
+                    int intRobotMidX = Integer.parseInt(robotMidX) - 1;
+                    robotMidX = String.valueOf(intRobotMidX);
+                    //robotMidX = Integer.toString((Integer.parseInt(contents[3].trim())-1));
+                    //robotMidY = Integer.toString((Integer.parseInt(contents[2].trim())-1));
+                    robotDir = contents[4].trim();
+                    Log.d(MY_TAG, "paddedP1: "+paddedP1+", paddedP2: "+paddedP2+", robotMidX: "+robotMidX+", robotMidY: "+robotMidY+", robotDir: "+robotDir);
 
                     //  Move robot
                     moveRobot(robotMidX, robotMidY, robotDir);
