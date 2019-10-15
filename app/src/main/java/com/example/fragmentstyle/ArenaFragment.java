@@ -217,8 +217,11 @@ public class ArenaFragment extends Fragment {
     public void sendStartingPosition(Point position, int width, int height, float rotation) {
         bs.sendMessageToRemoteDevice(ROBOT_COMMAND_COORDINATES_START + ":" + (position.x / width) + "," + (ARENA_ROW_COUNT - (position.y / height)) + "," + (long) rotation);
     }
-    public void returnSpeech(ArrayList<String> matches){
 
+    /**
+     * Maps voice to instruction to robot
+     */
+    public void returnSpeech(ArrayList<String> matches){
         Log.d(VOICE, "returnSpeech: voice returned");
         ArenaFragment.matches = matches;
         if(matches.contains("start exploration") || matches.contains("explore")){
@@ -237,27 +240,6 @@ public class ArenaFragment extends Fragment {
             Toast.makeText(getContext(),"VOICE RIGHT", Toast.LENGTH_SHORT).show();
             rotateRightButton.performClick();
         }
-//
-//
-//        for(int i = 0;i<20;i++){
-//            if(matches.contains("move forward "+i+" times") || matches.contains("forward "+i+" times")){
-//                for(int j=i;j>0;j--){
-//                    up.performClick();
-//                }
-//            }else if(matches.contains("move back "+i+" times") || matches.contains("back "+i+" times") || matches.contains("reverse "+i+" times")){
-//                for(int j=i;j>0;j--){
-//                    down.performClick();
-//                }
-//            }else if(matches.contains("rotate right "+i+" times") || matches.contains("right "+i+" times")){
-//                for(int j=i;j>0;j--){
-//                    right.performClick();
-//                }
-//            }else if(matches.contains("rotate left "+i+" times") || matches.contains("left "+i+" times")){
-//                for(int j=i;j>0;j--){
-//                    left.performClick();
-//                }
-//            }
-//        }
     }
 
     /**
@@ -430,7 +412,6 @@ public class ArenaFragment extends Fragment {
                     String paddedP1 = contents[0].trim();
                     String paddedP2 = contents[1].trim();
                     robotMidX = contents[3].trim();
-                    // TODO: Might need to change according to checks
                     robotMidY = contents[2].trim();
                     int intRobotMidX = Integer.parseInt(robotMidX) - 1;
                     robotMidX = String.valueOf(intRobotMidX);
@@ -472,7 +453,6 @@ public class ArenaFragment extends Fragment {
                     String paddedP1 = contents[0].trim();
                     String paddedP2 = contents[1].trim();
                     robotMidX = contents[3].trim();
-                    // TODO: Might need to change according to checks
                     robotMidY = contents[2].trim();
                     int intRobotMidX = Integer.parseInt(robotMidX) - 1;
                     robotMidX = String.valueOf(intRobotMidX);
@@ -490,7 +470,6 @@ public class ArenaFragment extends Fragment {
         else if(message.startsWith("/i")){
             Log.d(MY_TAG, "Message dealing with image recognition");
             int imageXcoord, imageYcoord,imageID;
-            //TODO implement image labling here
             message = message.replace("/i","");
             Log.d(MY_TAG, "message: "+message);
             if (message.startsWith("m")){
@@ -947,52 +926,4 @@ public class ArenaFragment extends Fragment {
             return false;
         }
     };
-
-//    public static void returnSpeech(ArrayList<String> matches){
-//        ArenaFragment.matches = matches;
-////        if(matches.contains("start exploration") || matches.contains("explore")){
-////
-////        }
-//        if(matches.contains("move forward") || matches.contains("forward")){
-//
-//
-//            forwardButton.performClick();
-//
-//        }
-//        else if(matches.contains("rotate left") || matches.contains("left")){
-//
-//
-//            rotateLeftButton.performClick();
-//
-//        }
-//        else if(matches.contains("rotate right") || matches.contains("right")){
-//
-//            right.performClick();
-//
-//        }
-//        else if(matches.contains("move back") || matches.contains("back") || matches.contains("reverse")){
-//
-//            down.performClick();
-//
-//        }
-//        for(int i = 0;i<20;i++){
-//            if(matches.contains("move forward "+i+" times") || matches.contains("forward "+i+" times")){
-//                for(int j=i;j>0;j--){
-//                    up.performClick();
-//                }
-//            }else if(matches.contains("move back "+i+" times") || matches.contains("back "+i+" times") || matches.contains("reverse "+i+" times")){
-//                for(int j=i;j>0;j--){
-//                    down.performClick();
-//                }
-//            }else if(matches.contains("rotate right "+i+" times") || matches.contains("right "+i+" times")){
-//                for(int j=i;j>0;j--){
-//                    right.performClick();
-//                }
-//            }else if(matches.contains("rotate left "+i+" times") || matches.contains("left "+i+" times")){
-//                for(int j=i;j>0;j--){
-//                    left.performClick();
-//                }
-//            }
-//        }
-//    }
 }
