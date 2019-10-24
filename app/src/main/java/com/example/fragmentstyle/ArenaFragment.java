@@ -473,6 +473,7 @@ public class ArenaFragment extends Fragment {
             int imageXcoord, imageYcoord,imageID,i;
             message = message.replace("/i","");
             Log.d(MY_TAG, "message: "+message);
+
             String[] ptArr = message.split(",");
             for (i=0; i<ptArr.length;i++){
                 String temp = ptArr[i];
@@ -483,6 +484,45 @@ public class ArenaFragment extends Fragment {
                 Point fullCoord = new Point(imageXcoord,imageYcoord);
                 storeImage.put(imageID,fullCoord);
                 Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
+
+            if (message.startsWith("m")){
+                // Preferences.removeHashMap(getContext());
+                //Since its first point, remove previous saved points
+                message = message.replace("m","");
+                Log.d(MY_TAG, "replace message: "+message);
+                String[] strArray = message.split(",");
+                for(String imageData : strArray){
+                    int x;
+                    int y;
+                    int id;
+                }
+//                Log.d(MY_TAG, "strArray: "+ Arrays.toString(strArray));
+//                Log.d(MY_TAG, "strArray[0]: "+strArray[0].toString());
+//                imageID = Integer.parseInt(strArray[0]);
+//                Log.d(MY_TAG, "image: "+imageID);
+//                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
+//                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
+//                Point fullCoord = new Point(imageXcoord,imageYcoord);
+//                storeImage.put(imageID,fullCoord);
+//                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
+                Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+            }
+            else{
+                storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
+                String[] strArray = message.split(",");
+                imageID = Integer.parseInt(strArray[0]);
+                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
+                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
+                Point fullCoord = new Point(imageXcoord,imageYcoord);
+                if (storeImage.containsKey(imageID)){
+                    Log.d(MY_TAG, "processMessage: repeat message");
+                }
+                else{
+                    storeImage.put(imageID,fullCoord);
+                    Log.d(MY_TAG, "processMessage: added new points");
+                    Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+                }
+
             }
             Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
 //            if (message.startsWith("m")){
@@ -696,8 +736,8 @@ public class ArenaFragment extends Fragment {
                             int[] robotLoc = arenaView.getRobotLoc();
                             arenaView.moveRobot(robotLoc[0], robotLoc[1], robotLoc[2]);
                             //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
-                            //  Send way point coordinates
-//                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
+                            // Send way point coordinates
+                            // Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
                              bs.sendMessageToRemoteDevice("A"+waypointMsg);
                             //  Save way point coordinates
                             Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
