@@ -42,23 +42,23 @@ public interface Constants {
     String ROBOT_COMMAND_COORDINATES_WAYPOINT = "O" + "";
     String IMAGE_KEY = "IMAGE_CONTAINER";
     enum STATUS{CALIBRATING, MOVEMENT, IDLE, FASTEST_PATH, EXPLORATION, ERROR, CUSTOM};
-    Map<Integer, String> myMap = new HashMap<Integer, String>() {{
-        put(1, "W_A_U");
-        put(2, "R_A_D");
-        put(3, "G_A_R");
-        put(4, "B_A_L");
-        put(5, "Y_S");
-        put(6, "B_N_1");
-        put(7, "G_N_2");
-        put(8, "R_N_3");
-        put(9, "W_N_4");
-        put(10, "Y_N_5");
-        put(11, "R_L_A");
-        put(12, "G_L_B");
-        put(13, "W_L_C");
-        put(14, "B_L_D");
-        put(15, "Y_L_E");
-    }};
+//    Map<Integer, String> myMap = new HashMap<Integer, String>() {{
+//        put(1, "W_A_U");
+//        put(2, "R_A_D");
+//        put(3, "G_A_R");
+//        put(4, "B_A_L");
+//        put(5, "Y_S");
+//        put(6, "B_N_1");
+//        put(7, "G_N_2");
+//        put(8, "R_N_3");
+//        put(9, "W_N_4");
+//        put(10, "Y_N_5");
+//        put(11, "R_L_A");
+//        put(12, "G_L_B");
+//        put(13, "W_L_C");
+//        put(14, "B_L_D");
+//        put(15, "Y_L_E");
+//    }};
 
     /**
      * Arena Action constants

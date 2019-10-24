@@ -86,6 +86,7 @@ public class CustomCommandsFragment extends Fragment {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO change colors and do message handling into status
                 switch (myStatus){
                     case DEFAULT:
                         status.setText("default status");

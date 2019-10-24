@@ -13,10 +13,6 @@ import java.util.Map;
 
 import static com.example.fragmentstyle.Constants.IMAGE_KEY;
 
-/**
- * Created by yongj on 2/8/2018.
- */
-
 public class Preferences {
 
     //  Logging

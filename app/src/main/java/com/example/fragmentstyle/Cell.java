@@ -174,11 +174,4 @@ class Cell {
         Log.d("IMAGETEST", "setImageId: imageid set to "+ imageId);
         this.imageId = imageId;
     }
-
-//    void drawImg(Canvas canvas, int id){
-//        Paint mypaint = this.paint;
-//        mypaint.setAntiAlias(true);
-//        mypaint.setFilterBitmap(true);
-//        mypaint.setDither(true);
-//    }
 }
