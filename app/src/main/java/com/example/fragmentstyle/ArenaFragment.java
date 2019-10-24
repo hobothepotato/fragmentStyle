@@ -475,22 +475,29 @@ public class ArenaFragment extends Fragment {
             Log.d(MY_TAG, "Message dealing with image recognition");
             int imageXcoord, imageYcoord,imageID,i;
             message = message.replace("/i","");
-            Log.d(MY_TAG, "message: "+message);
 
-            String[] ptArr = message.split(",");
-            for (i=0; i<ptArr.length;i++){
-                String temp = ptArr[i];
-                String[] tempArr = temp.split("_");
-                imageID = Integer.parseInt(tempArr[2]);
-                imageXcoord = Integer.parseInt(tempArr[0]);
-                imageYcoord = 19- Integer.parseInt(tempArr[1]);
-                Point fullCoord = new Point(imageXcoord,imageYcoord);
-                storeImage.put(imageID,fullCoord);
-                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
-                arenaView.setImageOnMap(imageXcoord, imageYcoord,imageID);
-                loadSavedArena();
+            Log.d(MY_TAG, "message: "+message);
+            if (message.isEmpty()){
+                Log.d(TAG, "processMessage: empty image message");
             }
-            Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+            else{
+                String[] ptArr = message.split(",");
+                Log.d(TAG, "first element:'" + ptArr[0].isEmpty() +"'");
+                for (i=0; i<ptArr.length;i++){
+                    String temp = ptArr[i];
+                    Log.d(TAG, "string processed:" + temp);
+                    String[] tempArr = temp.split("_");
+                    imageID = Integer.parseInt(tempArr[2]);
+                    imageXcoord = Integer.parseInt(tempArr[0]);
+                    imageYcoord = 19- Integer.parseInt(tempArr[1]);
+                    Point fullCoord = new Point(imageXcoord,imageYcoord);
+                    storeImage.put(imageID,fullCoord);
+                    Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
+                    arenaView.setImageOnMap(imageXcoord, imageYcoord,imageID);
+                    loadSavedArena();
+                }
+                Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+            }
         }
         else{
             //ERROR AREA NOT SUPPOSE TO APPEAR HERE!!!
@@ -594,7 +601,8 @@ public class ArenaFragment extends Fragment {
     private View.OnClickListener imageBtnOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            if (state == State.EXPLORING) {
+            //if (state == State.EXPLORING) {
+            if (1==1){
                 Map temp;
                 temp = Preferences.getHashMap(getContext(), IMAGE_KEY);
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
