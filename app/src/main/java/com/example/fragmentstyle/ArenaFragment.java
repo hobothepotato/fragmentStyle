@@ -467,48 +467,64 @@ public class ArenaFragment extends Fragment {
         }
         //Messages dealing with Image recognition id
         else if(message.startsWith("/i")){
+            Preferences.removeHashMap(getContext());
             Log.d(MY_TAG, "Message dealing with image recognition");
-            int imageXcoord, imageYcoord,imageID;
+            int imageXcoord, imageYcoord,imageID,i;
             message = message.replace("/i","");
             Log.d(MY_TAG, "message: "+message);
-            if (message.startsWith("m")){
-                // Preferences.removeHashMap(getContext());
-                //Since its first point, remove previous saved points
-                message = message.replace("m","");
-                Log.d(MY_TAG, "replace message: "+message);
-                String[] strArray = message.split(",");
-                for(String imageData : strArray){
-                    int x;
-                    int y;
-                    int id;
-                }
+
+            String[] ptArr = message.split(",");
+            for (i=0; i<ptArr.length;i++){
+                String temp = ptArr[i];
+                String[] tempArr = temp.split("_");
+                imageID = Integer.parseInt(tempArr[2]);
+                imageXcoord = Integer.parseInt(tempArr[0]);
+                imageYcoord = Integer.parseInt(tempArr[1]);
+                Point fullCoord = new Point(imageXcoord,imageYcoord);
+                storeImage.put(imageID,fullCoord);
+                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
+                arenaView.setImageOnMap(imageXcoord, imageYcoord,imageID);
+                loadSavedArena();
+            }
+            Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+
+//            if (message.startsWith("m")){
+//                // Preferences.removeHashMap(getContext());
+//                //Since its first point, remove previous saved points
+//                message = message.replace("m","");
+//                Log.d(MY_TAG, "replace message: "+message);
+//                String[] strArray = message.split(",");
 //                Log.d(MY_TAG, "strArray: "+ Arrays.toString(strArray));
 //                Log.d(MY_TAG, "strArray[0]: "+strArray[0].toString());
-//                imageID = Integer.parseInt(strArray[0]);
-//                Log.d(MY_TAG, "image: "+imageID);
-//                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
-//                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
+//                String[] mytemp = strArray[0].split("_");
+//                imageID = Integer.parseInt(mytemp[2]);
+//                imageXcoord = Integer.parseInt(mytemp[0]);
+//                imageYcoord = Integer.parseInt(mytemp[1]);
+////                imageID = Integer.parseInt(strArray[0]);
+////                Log.d(MY_TAG, "image: "+imageID);
+////                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
+////                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
 //                Point fullCoord = new Point(imageXcoord,imageYcoord);
 //                storeImage.put(imageID,fullCoord);
 //                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
-                Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
-            }
-            else{
-                storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
-                String[] strArray = message.split(",");
-                imageID = Integer.parseInt(strArray[0]);
-                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
-                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
-                Point fullCoord = new Point(imageXcoord,imageYcoord);
-                if (storeImage.containsKey(imageID)){
-                    Log.d(MY_TAG, "processMessage: repeat message");
-                }
-                else{
-                    storeImage.put(imageID,fullCoord);
-                    Log.d(MY_TAG, "processMessage: added new points");
-                    Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
-                }
-            }
+//                Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+//            }
+//            else{
+//                storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
+//                String[] strArray = message.split(",");
+//                imageID = Integer.parseInt(strArray[0]);
+//                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
+//                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
+//                Point fullCoord = new Point(imageXcoord,imageYcoord);
+//                if (storeImage.containsKey(imageID)){
+//                    Log.d(MY_TAG, "processMessage: repeat message");
+//                }
+//                else{
+//                    storeImage.put(imageID,fullCoord);
+//                    Log.d(MY_TAG, "processMessage: added new points");
+//                    Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+//                }
+//            }
         }
         else{
             //ERROR AREA NOT SUPPOSE TO APPEAR HERE!!!
