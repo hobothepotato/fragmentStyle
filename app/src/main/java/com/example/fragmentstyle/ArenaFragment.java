@@ -52,7 +52,6 @@ import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_FORWARD;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_LEFT;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_RIGHT;
 import static com.example.fragmentstyle.Constants.STATUS;
-import static com.example.fragmentstyle.Constants.myMap;
 
 public class ArenaFragment extends Fragment {
 
@@ -484,47 +483,11 @@ public class ArenaFragment extends Fragment {
                 Point fullCoord = new Point(imageXcoord,imageYcoord);
                 storeImage.put(imageID,fullCoord);
                 Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
-
-            if (message.startsWith("m")){
-                // Preferences.removeHashMap(getContext());
-                //Since its first point, remove previous saved points
-                message = message.replace("m","");
-                Log.d(MY_TAG, "replace message: "+message);
-                String[] strArray = message.split(",");
-                for(String imageData : strArray){
-                    int x;
-                    int y;
-                    int id;
-                }
-//                Log.d(MY_TAG, "strArray: "+ Arrays.toString(strArray));
-//                Log.d(MY_TAG, "strArray[0]: "+strArray[0].toString());
-//                imageID = Integer.parseInt(strArray[0]);
-//                Log.d(MY_TAG, "image: "+imageID);
-//                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
-//                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
-//                Point fullCoord = new Point(imageXcoord,imageYcoord);
-//                storeImage.put(imageID,fullCoord);
-//                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
-                Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
-            }
-            else{
-                storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
-                String[] strArray = message.split(",");
-                imageID = Integer.parseInt(strArray[0]);
-                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
-                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
-                Point fullCoord = new Point(imageXcoord,imageYcoord);
-                if (storeImage.containsKey(imageID)){
-                    Log.d(MY_TAG, "processMessage: repeat message");
-                }
-                else{
-                    storeImage.put(imageID,fullCoord);
-                    Log.d(MY_TAG, "processMessage: added new points");
-                    Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
-                }
-
+                arenaView.setImageOnMap(imageXcoord, imageYcoord,imageID);
+                loadSavedArena();
             }
             Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+
 //            if (message.startsWith("m")){
 //                // Preferences.removeHashMap(getContext());
 //                //Since its first point, remove previous saved points
