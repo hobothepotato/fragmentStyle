@@ -92,6 +92,18 @@
             android:text="Clear Map"
             android:textSize="10sp" />
 
+        <Button
+            android:id="@+id/renderImg"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/clearMap"
+            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_toEndOf="@+id/arena_frame"
+            android:layout_toRightOf="@+id/arena_frame"
+            android:text="Render"
+            android:textSize="10sp" />
+
     </RelativeLayout>
 
     <LinearLayout
