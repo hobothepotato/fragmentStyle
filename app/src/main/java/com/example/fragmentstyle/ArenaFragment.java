@@ -499,15 +499,20 @@ public class ArenaFragment extends Fragment {
                 message = message.replace("m","");
                 Log.d(MY_TAG, "replace message: "+message);
                 String[] strArray = message.split(",");
-                Log.d(MY_TAG, "strArray: "+ Arrays.toString(strArray));
-                Log.d(MY_TAG, "strArray[0]: "+strArray[0].toString());
-                imageID = Integer.parseInt(strArray[0]);
-                Log.d(MY_TAG, "image: "+imageID);
-                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
-                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
-                Point fullCoord = new Point(imageXcoord,imageYcoord);
-                storeImage.put(imageID,fullCoord);
-                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
+                for(String imageData : strArray){
+                    int x;
+                    int y;
+                    int id;
+                }
+//                Log.d(MY_TAG, "strArray: "+ Arrays.toString(strArray));
+//                Log.d(MY_TAG, "strArray[0]: "+strArray[0].toString());
+//                imageID = Integer.parseInt(strArray[0]);
+//                Log.d(MY_TAG, "image: "+imageID);
+//                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
+//                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
+//                Point fullCoord = new Point(imageXcoord,imageYcoord);
+//                storeImage.put(imageID,fullCoord);
+//                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
                 Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
             }
             else{
@@ -700,8 +705,8 @@ public class ArenaFragment extends Fragment {
                             int[] robotLoc = arenaView.getRobotLoc();
                             arenaView.moveRobot(robotLoc[0], robotLoc[1], robotLoc[2]);
                             //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
-                            //  Send way point coordinates
-//                            Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
+                            // Send way point coordinates
+                            // Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
                              bs.sendMessageToRemoteDevice("A"+waypointMsg);
                             //  Save way point coordinates
                             Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
