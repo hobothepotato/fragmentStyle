@@ -52,7 +52,6 @@ import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_FORWARD;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_LEFT;
 import static com.example.fragmentstyle.Constants.ROBOT_COMMAND_ROTATE_RIGHT;
 import static com.example.fragmentstyle.Constants.STATUS;
-import static com.example.fragmentstyle.Constants.myMap;
 
 public class ArenaFragment extends Fragment {
 
