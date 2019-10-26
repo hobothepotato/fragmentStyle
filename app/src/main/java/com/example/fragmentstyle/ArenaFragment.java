@@ -80,11 +80,12 @@ public class ArenaFragment extends Fragment {
     Button fastestPathButton;
     Button gridRobotBtn;
     Button gridWaypointBtn;
-    Button imgBtn;
+//    Button imgBtn;
     Button clearBtn;
     Button renderImg;
     Switch bluetoothStatusSwitch;
     Button voiceControl;
+    Button calibrateBtn;
     ImageButton forwardButton;
     ImageButton rotateLeftButton;
     ImageButton rotateRightButton;
@@ -122,12 +123,14 @@ public class ArenaFragment extends Fragment {
 //        ImageButton backwardButton = view.findViewById(R.id.robot_controls_backward);
         rotateLeftButton = view.findViewById(R.id.robot_controls_rotate_left);
         rotateRightButton = view.findViewById(R.id.robot_controls_rotate_right);
+        calibrateBtn = view.findViewById(R.id.calibrateBtn);
 
         //  Robot Controls: OnClickListeners
         forwardButton.setOnClickListener(forwardButtonClickListener);
 //        backwardButton.setOnClickListener(backwardButtonClickListener);
         rotateLeftButton.setOnClickListener(rotateLeftButtonClickListener);
         rotateRightButton.setOnClickListener(rotateRightButtonClickListener);
+        calibrateBtn.setOnClickListener(calibrateBtnonClickListener);
 
         //  Arena Controls
         placeWaypointButton = view.findViewById(R.id.arena_place_waypoint_button);
@@ -148,8 +151,8 @@ public class ArenaFragment extends Fragment {
         updateBtn = view.findViewById(R.id.updateBtn);
         manualBtn.setOnClickListener(manualButtonClickListener);
         updateBtn.setOnClickListener(updateButtonClickListener);
-        imgBtn = view.findViewById(R.id.showImg);
-        imgBtn.setOnClickListener(imageBtnOnClickListener);
+//        imgBtn = view.findViewById(R.id.showImg);
+//        imgBtn.setOnClickListener(imageBtnOnClickListener);
         clearBtn = view.findViewById(R.id.clearMap);
         clearBtn.setOnClickListener(clearBtnListener);
         renderImg = view.findViewById(R.id.renderImg);
@@ -598,71 +601,71 @@ public class ArenaFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener imageBtnOnClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            //if (state == State.EXPLORING) {
-            if (1==1){
-                Map temp;
-                temp = Preferences.getHashMap(getContext(), IMAGE_KEY);
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                String mymessage = "";
-                if (temp != null) {
-                    Iterator it = temp.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Point tempPoint;
-                        int myInt;
-                        Map.Entry entry = (Map.Entry) it.next();
-                        tempPoint = (Point) entry.getValue();
-                        Log.d(MY_TAG, "value type:" + tempPoint.getClass());
-                        //Log.d(MY_TAG, "point received" + tempPoint.x + ","+ tempPoint.y);
-                        myInt = (Integer) entry.getKey();
-                        Log.d(MY_TAG, "Image ID: " + myInt);
-                        mymessage += "(" + tempPoint.x + "," + tempPoint.y + "): Image ID" + myInt + "\n";
-                    }
-
-                } else {
-                    mymessage = "EMPTY HASHMAP";
-                }
-                builder1.setMessage(mymessage);
-                builder1.setCancelable(true);
-
-                builder1.setPositiveButton(
-                        "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-                Log.d(MY_TAG, "mymessage: " + mymessage);
-                if (mymessage != "EMPTY HASHMAP") {
-                    String[] all_images = mymessage.split("\n");
-                    Log.d(TAG, "onClick: image111");
-                    for (int i = 0; i < all_images.length; i++) {
-                        Log.d(TAG, "onClick: image inside for loopmd");
-                        ///crashing heremd
-                        String id = all_images[i].split(":")[1].replace("Image ID", "");
-                        Log.d(MY_TAG, "ID: " + id);
-                        Integer temp1 = Integer.parseInt(id.replace(" ",""));
-                        Log.d(MY_TAG, "onClick: temp1=" +temp1);
-                        String coord = all_images[i].split(":")[0];
-                        String appended_coord = coord.substring(1, coord.length() - 1);
-                        Log.d(MY_TAG, "coord: " + appended_coord);
-                        int xcoord = Integer.parseInt(appended_coord.split(",")[0]);
-                        int ycoord = Integer.parseInt(appended_coord.split(",")[1]);
-                        Log.d(MY_TAG, "IMAGE BTN LISTENER xcoord: " + String.valueOf(xcoord) + ", ycoord: " + String.valueOf(ycoord));
-                        arenaView.setImageOnMap(xcoord, ycoord,temp1);
-                        Log.d(TAG, "onClick: imageset");
-                        loadSavedArena();
-                    }
-                }
-            }else{
-                Toast.makeText(getContext(), "Only able to access after exploration", Toast.LENGTH_LONG).show();
-            }
-        }
-    };
+//    private View.OnClickListener imageBtnOnClickListener = new View.OnClickListener(){
+//        @Override
+//        public void onClick(View v) {
+//            //if (state == State.EXPLORING) {
+//            if (1==1){
+//                Map temp;
+//                temp = Preferences.getHashMap(getContext(), IMAGE_KEY);
+//                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+//                String mymessage = "";
+//                if (temp != null) {
+//                    Iterator it = temp.entrySet().iterator();
+//                    while (it.hasNext()) {
+//                        Point tempPoint;
+//                        int myInt;
+//                        Map.Entry entry = (Map.Entry) it.next();
+//                        tempPoint = (Point) entry.getValue();
+//                        Log.d(MY_TAG, "value type:" + tempPoint.getClass());
+//                        //Log.d(MY_TAG, "point received" + tempPoint.x + ","+ tempPoint.y);
+//                        myInt = (Integer) entry.getKey();
+//                        Log.d(MY_TAG, "Image ID: " + myInt);
+//                        mymessage += "(" + tempPoint.x + "," + tempPoint.y + "): Image ID" + myInt + "\n";
+//                    }
+//
+//                } else {
+//                    mymessage = "EMPTY HASHMAP";
+//                }
+//                builder1.setMessage(mymessage);
+//                builder1.setCancelable(true);
+//
+//                builder1.setPositiveButton(
+//                        "OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                AlertDialog alert11 = builder1.create();
+//                alert11.show();
+//                Log.d(MY_TAG, "mymessage: " + mymessage);
+//                if (mymessage != "EMPTY HASHMAP") {
+//                    String[] all_images = mymessage.split("\n");
+//                    Log.d(TAG, "onClick: image111");
+//                    for (int i = 0; i < all_images.length; i++) {
+//                        Log.d(TAG, "onClick: image inside for loopmd");
+//                        ///crashing heremd
+//                        String id = all_images[i].split(":")[1].replace("Image ID", "");
+//                        Log.d(MY_TAG, "ID: " + id);
+//                        Integer temp1 = Integer.parseInt(id.replace(" ",""));
+//                        Log.d(MY_TAG, "onClick: temp1=" +temp1);
+//                        String coord = all_images[i].split(":")[0];
+//                        String appended_coord = coord.substring(1, coord.length() - 1);
+//                        Log.d(MY_TAG, "coord: " + appended_coord);
+//                        int xcoord = Integer.parseInt(appended_coord.split(",")[0]);
+//                        int ycoord = Integer.parseInt(appended_coord.split(",")[1]);
+//                        Log.d(MY_TAG, "IMAGE BTN LISTENER xcoord: " + String.valueOf(xcoord) + ", ycoord: " + String.valueOf(ycoord));
+//                        arenaView.setImageOnMap(xcoord, ycoord,temp1);
+//                        Log.d(TAG, "onClick: imageset");
+//                        loadSavedArena();
+//                    }
+//                }
+//            }else{
+//                Toast.makeText(getContext(), "Only able to access after exploration", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    };
     public void setWaypoint(int x, int y) {
         arenaView.setWaypoint(x, y);
     }
@@ -697,11 +700,11 @@ public class ArenaFragment extends Fragment {
                             //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             // Send way point coordinates
                             // Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
-                             bs.sendMessageToRemoteDevice("A"+waypointMsg);
+                             bs.sendMessageToRemoteDevice("A"+waypointMsg+"\\n"+ROBOT_COMMAND_BEGIN_EXPLORATION);
                             //  Save way point coordinates
                             Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
                             //  Send explore keyword
-                            bs.sendMessageToRemoteDevice(ROBOT_COMMAND_BEGIN_EXPLORATION);
+                            // bs.sendMessageToRemoteDevice(ROBOT_COMMAND_BEGIN_EXPLORATION);
                             //  Set state
                             state = State.EXPLORING;
                             //robotStatusText.setText(R.string.robot_status_exploring);
@@ -826,6 +829,14 @@ public class ArenaFragment extends Fragment {
         public void onClick(View view) {
             if(arenaView.getManualArena() == 1) bs.sendMessageToRemoteDevice("Update");
             else  Toast.makeText(getContext(), "Must set to Manual before update is available.", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private View.OnClickListener calibrateBtnonClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            // Forces the robot to calibrate
+            bs.sendMessageToRemoteDevice("OC2A2C0");
         }
     };
 
