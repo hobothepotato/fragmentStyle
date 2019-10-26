@@ -82,6 +82,7 @@ public class ArenaFragment extends Fragment {
     Button gridWaypointBtn;
     Button imgBtn;
     Button clearBtn;
+    Button renderImg;
     Switch bluetoothStatusSwitch;
     Button voiceControl;
     ImageButton forwardButton;
@@ -151,6 +152,8 @@ public class ArenaFragment extends Fragment {
         imgBtn.setOnClickListener(imageBtnOnClickListener);
         clearBtn = view.findViewById(R.id.clearMap);
         clearBtn.setOnClickListener(clearBtnListener);
+        renderImg = view.findViewById(R.id.renderImg);
+        renderImg.setOnClickListener(renderbtnClickListener);
 
 
         // Voice recognition
@@ -433,6 +436,7 @@ public class ArenaFragment extends Fragment {
                 }
             } else if (state == State.FASTEST) {
                 Log.d(MY_TAG, "Process Message (FASTEST) message: "+message);
+                renderImg.performClick();
 
                 //  Regex expression to match correct messages
                 pattern = Pattern.compile("[0-9a-fA-F]+,[0-9a-fA-F]+,[0-9]+,[0-9]+,[0-9]+", Pattern.CASE_INSENSITIVE);
@@ -471,60 +475,29 @@ public class ArenaFragment extends Fragment {
             Log.d(MY_TAG, "Message dealing with image recognition");
             int imageXcoord, imageYcoord,imageID,i;
             message = message.replace("/i","");
+
             Log.d(MY_TAG, "message: "+message);
-
-            String[] ptArr = message.split(",");
-            for (i=0; i<ptArr.length;i++){
-                String temp = ptArr[i];
-                String[] tempArr = temp.split("_");
-                imageID = Integer.parseInt(tempArr[2]);
-                imageXcoord = Integer.parseInt(tempArr[0]);
-                imageYcoord = Integer.parseInt(tempArr[1]);
-                Point fullCoord = new Point(imageXcoord,imageYcoord);
-                storeImage.put(imageID,fullCoord);
-                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
-                arenaView.setImageOnMap(imageXcoord, imageYcoord,imageID);
-                loadSavedArena();
+            if (message.isEmpty()){
+                Log.d(TAG, "processMessage: empty image message");
             }
-            Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
-
-//            if (message.startsWith("m")){
-//                // Preferences.removeHashMap(getContext());
-//                //Since its first point, remove previous saved points
-//                message = message.replace("m","");
-//                Log.d(MY_TAG, "replace message: "+message);
-//                String[] strArray = message.split(",");
-//                Log.d(MY_TAG, "strArray: "+ Arrays.toString(strArray));
-//                Log.d(MY_TAG, "strArray[0]: "+strArray[0].toString());
-//                String[] mytemp = strArray[0].split("_");
-//                imageID = Integer.parseInt(mytemp[2]);
-//                imageXcoord = Integer.parseInt(mytemp[0]);
-//                imageYcoord = Integer.parseInt(mytemp[1]);
-////                imageID = Integer.parseInt(strArray[0]);
-////                Log.d(MY_TAG, "image: "+imageID);
-////                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
-////                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
-//                Point fullCoord = new Point(imageXcoord,imageYcoord);
-//                storeImage.put(imageID,fullCoord);
-//                Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
-//                Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
-//            }
-//            else{
-//                storeImage = Preferences.getHashMap(getContext(),IMAGE_KEY);
-//                String[] strArray = message.split(",");
-//                imageID = Integer.parseInt(strArray[0]);
-//                imageXcoord= Integer.parseInt(strArray[1].replace("(",""));
-//                imageYcoord= Integer.parseInt(strArray[2].replace(")",""));
-//                Point fullCoord = new Point(imageXcoord,imageYcoord);
-//                if (storeImage.containsKey(imageID)){
-//                    Log.d(MY_TAG, "processMessage: repeat message");
-//                }
-//                else{
-//                    storeImage.put(imageID,fullCoord);
-//                    Log.d(MY_TAG, "processMessage: added new points");
-//                    Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
-//                }
-//            }
+            else{
+                String[] ptArr = message.split(",");
+                Log.d(TAG, "first element:'" + ptArr[0].isEmpty() +"'");
+                for (i=0; i<ptArr.length;i++){
+                    String temp = ptArr[i];
+                    Log.d(TAG, "string processed:" + temp);
+                    String[] tempArr = temp.split("_");
+                    imageID = Integer.parseInt(tempArr[2]);
+                    imageXcoord = Integer.parseInt(tempArr[0]);
+                    imageYcoord = 19- Integer.parseInt(tempArr[1]);
+                    Point fullCoord = new Point(imageXcoord,imageYcoord);
+                    storeImage.put(imageID,fullCoord);
+                    Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
+                    arenaView.setImageOnMap(imageXcoord, imageYcoord,imageID);
+                    loadSavedArena();
+                }
+                Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
+            }
         }
         else{
             //ERROR AREA NOT SUPPOSE TO APPEAR HERE!!!
@@ -603,10 +576,33 @@ public class ArenaFragment extends Fragment {
         }
     };
 
+    private View.OnClickListener renderbtnClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            Map temp;
+            temp = Preferences.getHashMap(getContext(), IMAGE_KEY);
+            if (temp != null) {
+                Iterator it = temp.entrySet().iterator();
+                while (it.hasNext()) {
+                    Point tempPoint;
+                    int myID;
+                    Map.Entry entry = (Map.Entry) it.next();
+                    myID = (Integer) entry.getKey();
+                    tempPoint = (Point) entry.getValue();
+                    arenaView.setImageOnMap(tempPoint.x,tempPoint.y,myID);
+                }
+            }
+            else{
+                Log.d(TAG, "onClick: NO HASHMAP FOUND");
+            }
+        }
+    };
+
     private View.OnClickListener imageBtnOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            if (state == State.EXPLORING) {
+            //if (state == State.EXPLORING) {
+            if (1==1){
                 Map temp;
                 temp = Preferences.getHashMap(getContext(), IMAGE_KEY);
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
@@ -765,6 +761,7 @@ public class ArenaFragment extends Fragment {
                             //  Set state
                             state = State.FASTEST;
                             //robotStatusText.setText(R.string.robot_status_fastest_path);
+                            renderImg.performClick();
                             setStatus(STATUS.FASTEST_PATH, "Fastest Path");
                         } else {
                             Toast.makeText(getContext(), "Bluetooth is not connected", Toast.LENGTH_LONG).show();
