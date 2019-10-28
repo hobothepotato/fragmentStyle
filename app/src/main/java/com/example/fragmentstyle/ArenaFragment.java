@@ -845,32 +845,37 @@ public class ArenaFragment extends Fragment {
         switch (type){
             case IDLE:
                 //do something
-                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                robotStatusText.setBackgroundColor(Color.parseColor("#F6FB46"));
                 robotStatusText.setText("Idling.....");
                 break;
             case ERROR:
                 //do something
                 robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                robotStatusText.setText("ERROR OCCURED.");
                 break;
             case CUSTOM:
                 //do something
-                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                robotStatusText.setBackgroundColor(Color.parseColor("#30ED26"));
                 break;
             case MOVEMENT:
                 //do sometthing
-                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                robotStatusText.setBackgroundColor(Color.parseColor("#30ED26"));
+                robotStatusText.setText("ROBOT IN MOTION");
                 break;
             case CALIBRATING:
                 //do something
-                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                robotStatusText.setBackgroundColor(Color.parseColor("#FB8A46"));
+                robotStatusText.setText("CALIBRATING.");
                 break;
             case EXPLORATION:
                 //do something
-                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                robotStatusText.setBackgroundColor(Color.parseColor("#2634ED"));
+                robotStatusText.setText("EXPLORATION");
                 break;
             case FASTEST_PATH:
                 //do seomthing
-                robotStatusText.setBackgroundColor(Color.parseColor("#FF1A1A"));
+                robotStatusText.setBackgroundColor(Color.parseColor("#26EDDF"));
+                robotStatusText.setText("RACE BEGINS");
                 break;
         }
         robotStatusText.setText(message);
