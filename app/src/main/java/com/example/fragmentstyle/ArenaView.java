@@ -497,6 +497,7 @@ public class ArenaView extends SurfaceView implements SurfaceHolder.Callback {
         Drawable img = getResources().getDrawable(R.drawable.imagearrowwhite);
         cells[19-x][y].setType4(IMAGE);
         cells[19-x][y].setImageId(id);
+        Log.d(MY_TAG, "setImageOnMap: id: "+id);
         switch (id){
             case 1: img = getResources().getDrawable(R.drawable.imagearrowwhite);
                 break;
