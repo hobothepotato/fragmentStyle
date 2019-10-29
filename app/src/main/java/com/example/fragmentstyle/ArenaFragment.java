@@ -700,7 +700,7 @@ public class ArenaFragment extends Fragment {
                             //Preferences.savePreference(getContext(), R.string.arena_robot_position, "1,1,180.0");
                             // Send way point coordinates
                             // Log.d(MY_TAG, "explore on click listener: waypoint: "+ROBOT_COMMAND_COORDINATES_WAYPOINT+""+waypointMsg);
-                             bs.sendMessageToRemoteDevice("A"+waypointMsg+"\\n"+ROBOT_COMMAND_BEGIN_EXPLORATION);
+                             bs.sendMessageToRemoteDevice("A"+waypointMsg+"\n"+ROBOT_COMMAND_BEGIN_EXPLORATION);
                             //  Save way point coordinates
                             Preferences.savePreference(getContext(), R.string.arena_waypoint, waypointMsg);
                             //  Send explore keyword
@@ -836,7 +836,7 @@ public class ArenaFragment extends Fragment {
         @Override
         public void onClick(View view){
             // Forces the robot to calibrate
-            bs.sendMessageToRemoteDevice("OC2A2C0");
+            bs.sendMessageToRemoteDevice("OC2A1C0");
         }
     };
 
