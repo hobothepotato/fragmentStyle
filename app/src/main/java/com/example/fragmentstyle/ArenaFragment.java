@@ -485,22 +485,30 @@ public class ArenaFragment extends Fragment {
             }
             else{
                 String[] ptArr = message.split(",");
+                StringBuilder sb = new StringBuilder();
                 Log.d(TAG, "first element:'" + ptArr[0].isEmpty() +"'");
                 for (i=0; i<ptArr.length;i++){
                     String temp = ptArr[i];
-                    temp = temp.replace("(","");
-                    temp = temp.replace(")","");
                     Log.d(TAG, "string processed:" + temp);
-                    String[] tempArr = temp.split(",");
+                    String[] tempArr = temp.split("_");
                     imageID = Integer.parseInt(tempArr[0]);
                     imageXcoord = Integer.parseInt(tempArr[1]);
                     imageYcoord = Integer.parseInt(tempArr[2]);
                     Point fullCoord = new Point(imageXcoord,imageYcoord);
+                    sb.append("(");
+                    sb.append(imageID);
+                    sb.append(",");
+                    sb.append(imageXcoord);
+                    sb.append(",");
+                    sb.append(imageYcoord);
+                    sb.append("),");
                     storeImage.put(imageID,fullCoord);
                     Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
                     arenaView.setImageOnMap(imageXcoord, imageYcoord,imageID);
                     loadSavedArena();
                 }
+                String s = sb.toString();
+                Preferences.savePreference(getContext(), R.string.image_descriptor, s);
                 Preferences.saveHashMap(getContext(),IMAGE_KEY,storeImage);
             }
         }
