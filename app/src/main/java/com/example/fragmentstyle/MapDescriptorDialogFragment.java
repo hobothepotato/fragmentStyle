@@ -43,6 +43,7 @@ public class MapDescriptorDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         currP1MapDescriptor = args.getString("p1");
         currP2MapDescriptor = args.getString("p2");
+        currImageDescriptor = args.getString("img");
     }
 
     @NonNull
@@ -70,6 +71,12 @@ public class MapDescriptorDialogFragment extends DialogFragment {
             p2MapDescriptorText.setText(currP2MapDescriptor);
         } else {
             p2MapDescriptorText.setText(R.string.arena_descriptors_none);
+        }
+
+        if (currImageDescriptor.trim().length() != 0) {
+            imageDescriptorText.setText(currImageDescriptor);
+        } else {
+            imageDescriptorText.setText(R.string.arena_descriptors_none);
         }
 
         builder.setView(view)
