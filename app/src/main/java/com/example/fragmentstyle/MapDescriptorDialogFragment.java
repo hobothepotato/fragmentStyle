@@ -29,6 +29,7 @@ public class MapDescriptorDialogFragment extends DialogFragment {
     //  Map Descriptors
     String currP1MapDescriptor;
     String currP2MapDescriptor;
+    String currImageDescriptor;
 
     public MapDescriptorDialogFragment() {
         // Required empty public constructor
@@ -56,6 +57,7 @@ public class MapDescriptorDialogFragment extends DialogFragment {
         //  Layout items
         TextView p1MapDescriptorText = view.findViewById(R.id.arena_p1_descriptor);
         TextView p2MapDescriptorText = view.findViewById(R.id.arena_p2_descriptor);
+        TextView imageDescriptorText = view.findViewById(R.id.image_descriptor);
 
         //  Setting values of Layout items
         if (currP1MapDescriptor.trim().length() != 0) {

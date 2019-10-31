@@ -50,6 +50,7 @@
 
     <!-- Arena SharedPreferences -->
     <string name="arena_p1_descriptor">Arena P1 Descriptor</string>
+    <string name="image_descriptor">Image Descriptor</string>
     <string name="arena_p2_descriptor">Arena P2 Descriptor</string>
     <string name="arena_robot_position">Arena Robot Position</string>
     <string name="arena_waypoint">Arena Waypoint</string>

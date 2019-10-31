@@ -51,4 +51,21 @@
         android:layout_marginLeft="@dimen/margin_dialog_contents"
         android:layout_marginRight="@dimen/margin_dialog_contents" />
 
+    <TextView
+        android:id="@+id/image_descriptor_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_dialog_contents"
+        android:layout_marginRight="@dimen/margin_dialog_contents"
+        android:textColor="@android:color/black"
+        android:text="Image Descriptor" />
+
+    <TextView
+        android:id="@+id/image_descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_dialog_contents"
+        android:layout_marginRight="@dimen/margin_dialog_contents" />
 </LinearLayout>

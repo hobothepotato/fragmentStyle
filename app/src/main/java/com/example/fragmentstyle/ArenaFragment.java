@@ -478,8 +478,8 @@ public class ArenaFragment extends Fragment {
             Log.d(MY_TAG, "Message dealing with image recognition");
             int imageXcoord, imageYcoord,imageID,i;
             message = message.replace("/i","");
-
-            Log.d(MY_TAG, "message: "+message);
+            Preferences.savePreference(getContext(), R.string.image_descriptor, message);
+            Log.d(MY_TAG, "message: "+ message);
             if (message.isEmpty()){
                 Log.d(TAG, "processMessage: empty image message");
             }
@@ -488,11 +488,13 @@ public class ArenaFragment extends Fragment {
                 Log.d(TAG, "first element:'" + ptArr[0].isEmpty() +"'");
                 for (i=0; i<ptArr.length;i++){
                     String temp = ptArr[i];
+                    temp = temp.replace("(","");
+                    temp = temp.replace(")","");
                     Log.d(TAG, "string processed:" + temp);
-                    String[] tempArr = temp.split("_");
-                    imageID = Integer.parseInt(tempArr[2]);
-                    imageXcoord = Integer.parseInt(tempArr[0]);
-                    imageYcoord = 19- Integer.parseInt(tempArr[1]);
+                    String[] tempArr = temp.split(",");
+                    imageID = Integer.parseInt(tempArr[0]);
+                    imageXcoord = Integer.parseInt(tempArr[1]);
+                    imageYcoord = 19- Integer.parseInt(tempArr[2]);
                     Point fullCoord = new Point(imageXcoord,imageYcoord);
                     storeImage.put(imageID,fullCoord);
                     Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
@@ -795,6 +797,7 @@ public class ArenaFragment extends Fragment {
             Bundle args = new Bundle();
             args.putString("p1", Preferences.readPreference(getContext(), R.string.arena_p1_descriptor));
             args.putString("p2", Preferences.readPreference(getContext(), R.string.arena_p2_descriptor));
+            args.putString("img", Preferences.readPreference(getContext(),R.string.image_descriptor));
             //  Show dialog
             dialog.setArguments(args);
             dialog.show(getFragmentManager(), "MAP_DESC");
