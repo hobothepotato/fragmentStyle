@@ -501,7 +501,12 @@ public class ArenaFragment extends Fragment {
                     sb.append(imageXcoord);
                     sb.append(",");
                     sb.append(imageYcoord);
-                    sb.append("),");
+                    if (i == ptArr.length){
+                        sb.append(")");
+                    }
+                    else{
+                        sb.append("),");
+                    }
                     storeImage.put(imageID,fullCoord);
                     Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
                     arenaView.setImageOnMap(imageXcoord, imageYcoord,imageID);
