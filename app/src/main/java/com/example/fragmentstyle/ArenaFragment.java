@@ -494,7 +494,7 @@ public class ArenaFragment extends Fragment {
                     String[] tempArr = temp.split(",");
                     imageID = Integer.parseInt(tempArr[0]);
                     imageXcoord = Integer.parseInt(tempArr[1]);
-                    imageYcoord = 19- Integer.parseInt(tempArr[2]);
+                    imageYcoord = Integer.parseInt(tempArr[2]);
                     Point fullCoord = new Point(imageXcoord,imageYcoord);
                     storeImage.put(imageID,fullCoord);
                     Log.d(MY_TAG, "X: "+fullCoord.x+", Y: "+fullCoord.y);
