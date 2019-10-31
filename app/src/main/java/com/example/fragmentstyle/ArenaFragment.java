@@ -501,7 +501,7 @@ public class ArenaFragment extends Fragment {
                     sb.append(imageXcoord);
                     sb.append(",");
                     sb.append(imageYcoord);
-                    if (i == ptArr.length){
+                    if (i == ptArr.length - 1){
                         sb.append(")");
                     }
                     else{
@@ -779,7 +779,7 @@ public class ArenaFragment extends Fragment {
                             //  Set state
                             state = State.FASTEST;
                             //robotStatusText.setText(R.string.robot_status_fastest_path);
-                            renderImg.performClick();
+//                            renderImg.performClick();
                             setStatus(STATUS.FASTEST_PATH, "Fastest Path");
                         } else {
                             Toast.makeText(getContext(), "Bluetooth is not connected", Toast.LENGTH_LONG).show();
