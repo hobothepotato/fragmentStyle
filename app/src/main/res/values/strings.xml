@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MOOD</string>
+    <string name="app_name">A.R.E.S</string>
 
     <!-- Bluetooth -->
     <string name="bluetooth_scan">Scan for Nearby Devices</string>
